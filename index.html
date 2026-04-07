@@ -36,7 +36,10 @@
         width: 100%;
         max-width: 100%;
       }
-    
+      body {
+        margin: 0;
+        overflow-x: hidden;
+      }
         #popup {
             position: fixed;
             top: 50%;
@@ -72,6 +75,142 @@
             display: none;
             z-index: 900;
         }
+      .schermata {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        flex-direction: column;
+      }
+
+      .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 90%;
+        max-width: 350px;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      /* --- FORM --- */
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input, select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.2s;
+      }
+
+        button:hover {
+          background-color: #45a049;
+        }
+
+      /* --- SCHERMATA GRIGLIA --- */
+      #grigliaSchermata {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        height: 100vh;
+        gap: 10px;
+        padding-top: 20px;
+        box-sizing: border-box;
+      }
+
+      /* --- GRIGLIA --- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr); /* colonne uguali */
+        grid-template-rows: repeat(5, 1fr); /* righe uguali */
+        gap: 5px;
+        width: 90vw;
+        max-width: 500px;
+        aspect-ratio: 1 / 1; /* griglia quadrata */
+      }
+
+      /* --- TILE --- */
+      .tile {
+        width: 100%;
+        aspect-ratio: 1 / 1; /* altezza uguale alla larghezza */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border-radius: 8px;
+        border: 2px solid #ccc;
+        cursor: pointer;
+        user-select: none;
+        font-weight: bold;
+        font-size: clamp(12px, 2vw, 16px); /* testo scalabile */
+        box-sizing: border-box;
+        position: relative;
+      }
+
+        /* --- TILE ATTIVO --- */
+        .tile.active {
+          color: white;
+        }
+
+      /* --- MARK X --- */
+      .xmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        color: black;
+      }
+
+      /* --- MEDIA QUERY PER MOBILE MOLTO PICCOLO --- */
+      @media (max-width: 400px) {
+        .grid {
+          gap: 3px;
+        }
+
+        .tile {
+          font-size: 10px;
+        }
+
+        button, input, select {
+          font-size: 14px;
+        }
+      }
     </style>
 </head>
 <body>
@@ -106,7 +245,7 @@
   THE SOFTWARE.
 
   -->
-  <div class="map-container">
+  <div class="map-container" hidden="true">
     <!-- SVG qui dentro -->
 
     <svg baseprofile="tiny" fill="#ececec" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".2" version="1.2" viewBox="0 0 2000 857" xmlns="http://www.w3.org/2000/svg">
