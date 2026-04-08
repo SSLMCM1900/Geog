@@ -269,18 +269,19 @@
       </button>
       <button id="bottoneDomanda"
               style="
-       position: absolute;
-       top: 10px;
-       left: 10px;
-       padding: 5px 10px;
-       font-size: 12px;
-       width: auto;
-       background-color: #4da6ff;
-       color: white;
-       border: none;
-       border-radius: 5px;
-       cursor: pointer;
-     ">
+          position: fixed;
+          bottom: 20px;       /* distanza dal fondo */
+          left: 50%;          /* centro orizzontale */
+          transform: translateX(-50%);
+          padding: 10px 20px;
+          font-size: 14px;
+          background-color: #4da6ff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          z-index: 1000;
+        ">
         Genera domanda
       </button>
      
