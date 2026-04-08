@@ -5,7 +5,7 @@
     <title>Mappa completa</title>
     <style>
         svg path {
-            fill: #e0e0e0;
+          
             stroke: #333;
             stroke-width: 0.5;
             cursor: pointer;
@@ -245,9 +245,66 @@
   THE SOFTWARE.
 
   -->
-  <div class="map-container" >
+  <div class="map-container" id="mappa" hidden=hidden>
     <!-- SVG qui dentro -->
+    <div style="position: relative;">
+      <h1 id="GiocatoreAttivo">Turno di Giocatore 1</h1>
 
+      <!-- Bottone recap obiettivo -->
+      <button id="btnRecap"
+              style="
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          padding: 5px 10px;
+          font-size: 12px;
+          width: auto;
+          background-color: #4da6ff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        ">
+        Recap Obiettivo
+      </button>
+      <button id="bottoneDomanda"
+              style="
+       position: absolute;
+       top: 10px;
+       left: 10px;
+       padding: 5px 10px;
+       font-size: 12px;
+       width: auto;
+       background-color: #4da6ff;
+       color: white;
+       border: none;
+       border-radius: 5px;
+       cursor: pointer;
+     ">
+        Genera domanda
+      </button>
+     
+      <!-- Pannello popup nascosto -->
+      <div id="recapObiettivo"
+           style="
+       display: none;
+       position: absolute;
+       top: 40px;
+       right: 10px;
+       width: 250px;
+       background-color: #f0f0f0;
+       border: 1px solid #ccc;
+       padding: 10px;
+       border-radius: 8px;
+       box-shadow: 0 0 10px rgba(0,0,0,0.3);
+       z-index: 100;
+     ">
+        <h3>Obiettivo Giocatore</h3>
+        <p id="infoObiettivo">Qui inserirai le informazioni</p>
+      </div>
+
+
+    </div>
     <svg baseprofile="tiny" fill="#ececec" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".2" version="1.2" viewBox="0 0 2000 857" xmlns="http://www.w3.org/2000/svg">
       <path d="M1383 261.6l1.5 1.8-2.9 0.8-2.4 1.1-5.9 0.8-5.3 1.3-2.4 2.8 1.9 2.7 1.4 3.2-2 2.7 0.8 2.5-0.9 2.3-5.2-0.2 3.1 4.2-3.1 1.7-1.4 3.8 1.1 3.9-1.8 1.8-2.1-0.6-4 0.9-0.2 1.7-4.1 0-2.3 3.7 0.8 5.4-6.6 2.7-3.9-0.6-0.9 1.4-3.4-0.8-5.3 1-9.6-3.3 3.9-5.8-1.1-4.1-4.3-1.1-1.2-4.1-2.7-5.1 1.6-3.5-2.5-1 0.5-4.7 0.6-8 5.9 2.5 3.9-0.9 0.4-2.9 4-0.9 2.6-2-0.2-5.1 4.2-1.3 0.3-2.2 2.9 1.7 1.6 0.2 3 0 4.3 1.4 1.8 0.7 3.4-2 2.1 1.2 0.9-2.9 3.2 0.1 0.6-0.9-0.2-2.6 1.7-2.2 3.3 1.4-0.1 2 1.7 0.3 0.9 5.4 2.7 2.1 1.5-1.4 2.2-0.6 2.5-2.9 3.8 0.5 5.4 0z" id="AF" data-name="Afghanistan">
       </path>
@@ -1196,8 +1253,89 @@
       <circle cx="1798.2" cy="719.3" id="2">
       </circle>
     </svg>
+   
   </div>
   <div id="overlay"></div>
+  <div class="container" id="imp">
+    <h1>Impostazioni</h1>
+    <form>
+
+
+      <div class="form-group" id="contenitorenumerogiocatori">
+        <label id="lblnumerogiocatori" for="numerogiocatori">Numero Giocatori</label>
+        <select id="selezionanumerogiocatori" onchange="cambiaNumeroGiocatori(this.value)">
+          <option value="2" selected=selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="campogiocatore1">
+        <label for="Giocatore1">Inserisci Nome Giocatore 1</label>
+        <input type="text" id="Giocatore1" name="Giocatore1"
+               pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]+"
+               title="Inserisci solo lettere dell'alfabeto, lettere accentate e spazi"
+               oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]/g,'').toUpperCase()" />
+      </div>
+      <div class="form-group" id="campogiocatore2">
+        <label for="Giocatore2">Inserisci Nome Giocatore 2</label>
+        <input type="text" id="Giocatore2" name="Giocatore2"
+               pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]+"
+               title="Inserisci solo lettere dell'alfabeto, lettere accentate e spazi"
+               oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]/g,'').toUpperCase()" />
+      </div>
+
+      <div class="form-group" id="campogiocatore3" hidden=hidden>
+        <label for="Giocatore3">Inserisci Nome Giocatore 3</label>
+        <input type="text" id="Giocatore3" name="Giocatore3"
+               pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]+"
+               title="Inserisci solo lettere dell'alfabeto, lettere accentate e spazi"
+               oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]/g,'').toUpperCase()" />
+      </div>
+      <div class="form-group" id="campogiocatore4" hidden=hidden>
+        <label for="Giocatore4">Inserisci Nome Giocatore 4</label>
+        <input type="text" id="Giocatore4" name="Giocatore4"
+               pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]+"
+               title="Inserisci solo lettere dell'alfabeto, lettere accentate e spazi"
+               oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]/g,'').toUpperCase()" />
+      </div>
+      <div class="form-group" id="campogiocatore5" hidden=hidden>
+        <label for="Giocatore5">Inserisci Nome Giocatore 5</label>
+        <input type="text" id="Giocatore5" name="Giocatore5"
+               pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]+"
+               title="Inserisci solo lettere dell'alfabeto, lettere accentate e spazi"
+               oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]/g,'').toUpperCase()" />
+      </div>
+      <div class="form-group" id="campogiocatore6" hidden=hidden>
+        <label for="Giocatore6">Inserisci Nome Giocatore 6</label>
+        <input type="text" id="Giocatore6" name="Giocatore6"
+               pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]+"
+               title="Inserisci solo lettere dell'alfabeto, lettere accentate e spazi"
+               oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]/g,'').toUpperCase()" />
+      </div>
+
+
+      <div class="form-group" id="contenitoredifficolta">
+        <label id="lbldifficolta" for="difficolta">Selezionare Difficoltà</label>
+        <select id="selezionadifficolta" onchange="cambiaDifficolta(this.value)">
+          <option value="normale" selected=selected>NORMALE</option>
+          <option value="semplificato">SEMPLIFICATO</option>
+
+        </select>
+
+
+      </div>
+
+
+      <button id="bottoneAvanti" type="button">Avanti</button>
+    </form>
+  </div>
+
+
+
+
 
   <div id="popup">
     <div id="popup-close">&times;</div>
@@ -1220,11 +1358,3000 @@
   </button>
 
   <script src="Script1.js"></script>
+  </form>
+  </div>
 </body>
 </html >
 <script>
+  const bottoneDomanda = document.getElementById("bottoneDomanda")
+  const campogiocatore1 = document.getElementById("campogiocatore1")
+  const campogiocatore2 = document.getElementById("campogiocatore2")
+  const campogiocatore3 = document.getElementById("campogiocatore3")
+  const campogiocatore4 = document.getElementById("campogiocatore4")
+  const campogiocatore5 = document.getElementById("campogiocatore5")
+  const campogiocatore6 = document.getElementById("campogiocatore6")
+  const selezionanumerogiocatori = document.getElementById("selezionanumerogiocatori");
+  const Giocatore1 = document.getElementById("Giocatore1")
+  const Giocatore2 = document.getElementById("Giocatore2")
+  const Giocatore3 = document.getElementById("Giocatore3")
+  const Giocatore4 = document.getElementById("Giocatore4")
+  const Giocatore5 = document.getElementById("Giocatore5")
+  const Giocatore6 = document.getElementById("Giocatore6")
+  const imp = document.getElementById("imp");
+  const mappa = document.getElementById("mappa");
+  const titologiocatore= document.getElementById("GiocatoreAttivo")
+  let numeroturno = 1;
+  let difficolta = 0;
+  let numerogiocatori = 2;
   const paths = document.querySelectorAll('path');
+  let giocatori=[];
+  const coloritotale = ["#FF0000", "#0000FF", "#00FF00", "#FFFF00", "#000000", "#800080"];
+  let colorigiocatori = [];
+  let giocatoreingioco = 1;
+  let domandaestratta = "";
 
+  const obiettivitotale = ["Conquista 10 territori", "Conquista 2 territori in 4 continenti", "Conquista almeno 7 territori con media di popolazione maggiore di 50000000",
+    "Conquista almeno 7 territori con media di popolazione minore di 30000000", "Conquista almeno 7 terrirori ma solamente in al massimo 2 continenti",
+    "Conquista almeno 7 stati con estensione media maggiore di 800000 Km^2", "Conquista almeno 7 stati con estensione media minore di 700000 Km^2",
+    "Conquista almeno 7 Stati con PIL pro capite medio maggiore di 15000 dollari", "Conquista almeno 7 Stati con PIL pro capite medio minore di 10000 dollari", "Conquista almeno 7 Stati di cui almeno 5 mai colonizzati",
+    "Conquista almeno 7 stati di cui almeno 5 che sono stati colonizzati", "Conquista almeno 7 Stati di cui almeno 3 con la capitale che inizia con la stessa lettera"
+  ]
+  let obiettivigiocatori = [];
+  let territoritotali = [0, 0, 0, 0, 0, 0];
+  let territoriAfrica = [0, 0, 0, 0, 0, 0];
+  let territoriAsia = [0, 0, 0, 0, 0, 0];
+  let territoriAmeriche = [0, 0, 0, 0, 0, 0];
+  let territoriEuropa = [0, 0, 0, 0, 0, 0];
+  let territoriOceania = [0, 0, 0, 0, 0, 0];
+  let mediapopolazioneterritori = [0, 0, 0, 0, 0, 0];
+  let mediaestensioneterritori = [0, 0, 0, 0, 0, 0];
+  let mediaPilProcapite = [0, 0, 0, 0, 0, 0];
+  let territorimaicolonizzati = [0, 0, 0, 0, 0, 0];
+  let territoricolonizzati = [0, 0, 0, 0, 0, 0];
+  let capitali = [[], [], [], [], [], []];
+  const domande = ["Almeno 60 milioni  di abitanti", "Al massimo 25 milioni di abitanti", "Estensione di almeno 900000 Km^2 ", "Estensione di al massimo 600000", "Mai colonizzato", "Colonizzato almeno una volta",
+    "Repubblica", "Monarchia", "Dittatura", "Lingua principale tra inglese francese  spagnolo o arabo", "Lingua principale non inglese non francese non spagnolo e non arabo", "Capitale che inizia con una di queste consonanti: B N L P T G",
+    "Capitale che inizia con una di queste consonanti: R M V C S F", "Bandiera con almeno 3 colori ufficiali", "Bandiera con al massimo 2 colori ufficiali", "Indipendenza dopo il 1900 o mai avvenuta", "Indipendenza prima del 1900", "Montagna più alta di almeno 2500 metri",
+    "Montagna più alta minore di 2000 metri", "Capitale che nella traduzione italiana finisce con una consonante"
+  ];
+
+
+
+
+
+
+  const risposte = [
+    {
+      nome: "Afghanistan",
+      capitale: "Kabul",
+      popolazione: 41000000,
+      superficie: 652230,
+      pilProCapite: 378,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1919,
+      lingua: "Pashto",
+      numColoriBandiera: 3,
+      altezzaMonte: 7492
+
+    },
+    {
+      nome: "Angola",
+      capitale: "Luanda",
+      popolazione: 33000000,
+      superficie: 1246700,
+      pilProCapite: 6980,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1975,
+      lingua: "Portoghese",
+      numColoriBandiera: 2,
+      altezzaMonte: 2619
+    },
+    {
+      nome: "Albania",
+      capitale: "Tirana",
+      popolazione: 2900000,
+      superficie: 28748,
+      pilProCapite: 5820,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1912,
+      lingua: "Albanese",
+      numColoriBandiera: 2,
+      altezzaMonte: 2756
+    },
+    {
+      nome: "United Arab Emirates",
+      capitale: "Abu Dhabi",
+      popolazione: 9800000,
+      superficie: 83600,
+      pilProCapite: 43000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1971,
+      lingua: "Arabo",
+      numColoriBandiera: 4,
+      altezzaMonte: 1950
+    },
+    {
+      nome: "Argentina",
+      capitale: "Buenos Aires",
+      popolazione: 45000000,
+      superficie: 2780400,
+      pilProCapite: 22000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1816,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 6960
+    },
+    {
+      nome: "Armenia",
+      capitale: "Yerevan",
+      popolazione: 3000000,
+      superficie: 29743,
+      pilProCapite: 4700,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1991,
+      lingua: "Armeno",
+      numColoriBandiera: 3,
+      altezzaMonte: 4090
+    },
+    {
+      nome: "Australia",
+      capitale: "Canberra",
+      popolazione: 26000000,
+      superficie: 7692024,
+      pilProCapite: 55000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1901,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2228
+    },
+    {
+      nome: "Austria",
+      capitale: "Vienna",
+      popolazione: 9000000,
+      superficie: 83879,
+      pilProCapite: 51000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1955,
+      lingua: "Tedesco",
+      numColoriBandiera: 3,
+      altezzaMonte: 3798
+    },
+    {
+      nome: "Azerbaijan",
+      capitale: "Baku",
+      popolazione: 10200000,
+      superficie: 86600,
+      pilProCapite: 4800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1991,
+      lingua: "Azerbaigiano",
+      numColoriBandiera: 3,
+      altezzaMonte: 4466
+    },
+    {
+      nome: "Burundi",
+      capitale: "Gitega",
+      popolazione: 13000000,
+      superficie: 27834,
+      pilProCapite: 800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1962,
+      lingua: "Kirundi",
+      numColoriBandiera: 4,
+      altezzaMonte: 2684
+    },
+    {
+      nome: "Belgium",
+      capitale: "Bruxelles",
+      popolazione: 11500000,
+      superficie: 30528,
+      pilProCapite: 47000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1830,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 694
+    },
+    {
+      nome: "Benin",
+      capitale: "Porto Novo",
+      popolazione: 12500000,
+      superficie: 114763,
+      pilProCapite: 1800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 4,
+      altezzaMonte: 658
+    },
+    {
+      nome: "Burkina Faso",
+      capitale: "Ouagadougou",
+      popolazione: 22000000,
+      superficie: 272967,
+      pilProCapite: 1800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 2,
+      altezzaMonte: 747
+    },
+    {
+      nome: "Bangladesh",
+      capitale: "Dhaka",
+      popolazione: 170000000,
+      superficie: 148460,
+      pilProCapite: 4900,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1971,
+      lingua: "Bengalese",
+      numColoriBandiera: 2,
+      altezzaMonte: 1000
+    },
+    {
+      nome: "Bulgaria",
+      capitale: "Sofia",
+      popolazione: 6900000,
+      superficie: 110994,
+      pilProCapite: 10700,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1908,
+      lingua: "Bulgaro",
+      numColoriBandiera: 3,
+      altezzaMonte: 2925
+    },
+    {
+      nome: "Bosnia and Herzegovina",
+      capitale: "Sarajevo",
+      popolazione: 3300000,
+      superficie: 51197,
+      pilProCapite: 6400,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1992,
+      lingua: "Bosniaco",
+      numColoriBandiera: 4,
+      altezzaMonte: 2386
+    },
+    {
+      nome: "Belarus",
+      capitale: "Minsk",
+      popolazione: 9400000,
+      superficie: 207600,
+      pilProCapite: 6300,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1991,
+      lingua: "Russo",
+      numColoriBandiera: 3,
+      altezzaMonte: 345
+    },
+    {
+      nome: "Belize",
+      capitale: "Belmopan",
+      popolazione: 400000,
+      superficie: 22966,
+      pilProCapite: 5000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1981,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1124
+    },
+    {
+      nome: "Bolivia",
+      capitale: "Sucre",
+      popolazione: 11500000,
+      superficie: 1098581,
+      pilProCapite: 3500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1825,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 6542
+    },
+    {
+      nome: "Brazil",
+      capitale: "Brasília",
+      popolazione: 213000000,
+      superficie: 8515767,
+      pilProCapite: 8700,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1822,
+      lingua: "Portoghese",
+      numColoriBandiera: 4,
+      altezzaMonte: 2995
+    },
+    {
+      nome: "Brunei Darussalam",
+      capitale: "Bandar Seri Begawan",
+      popolazione: 460000,
+      superficie: 5765,
+      pilProCapite: 32000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1984,
+      lingua: "Malese",
+      numColoriBandiera: 4,
+      altezzaMonte: 1879
+    },
+    {
+      nome: "Bhutan",
+      capitale: "Thimphu",
+      popolazione: 770000,
+      superficie: 38394,
+      pilProCapite: 3300,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1949,
+      lingua: "Dzongkha",
+      numColoriBandiera: 2,
+      altezzaMonte: 7500
+    },
+    {
+      nome: "Botswana",
+      capitale: "Gaborone",
+      popolazione: 2500000,
+      superficie: 581730,
+      pilProCapite: 8200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1966,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 4890
+    },
+    {
+      nome: "Central African Republic",
+      capitale: "Bangui",
+      popolazione: 4900000,
+      superficie: 622984,
+      pilProCapite: 600,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 4,
+      altezzaMonte: 1463
+    },
+    {
+      nome: "Canada",
+      capitale: "Ottawa",
+      popolazione: 38000000,
+      superficie: 9984670,
+      pilProCapite: 48000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1867,
+      lingua: "Inglese",
+      numColoriBandiera: 2,
+      altezzaMonte: 5959
+    },
+    {
+      nome: "Switzerland",
+      capitale: "Berna",
+      popolazione: 8700000,
+      superficie: 41285,
+      pilProCapite: 82000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1291,
+      lingua: "Tedesco",
+      numColoriBandiera: 2,
+      altezzaMonte: 4634
+    },
+    {
+      nome: "China",
+      capitale: "Pechino",
+      popolazione: 1420000000,
+      superficie: 9596961,
+      pilProCapite: 12500,
+      formaDiGoverno: "Repubblica Popolare",
+      colonizzato: 0,
+      indipendenza: 1949,
+      lingua: "Mandarino",
+      numColoriBandiera: 1,
+      altezzaMonte: 8848
+    },
+    {
+      nome: "Ivory Coast",
+      capitale: "Yamoussoukro",
+      popolazione: 27000000,
+      superficie: 322463,
+      pilProCapite: 5800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1752
+    },
+    {
+      nome: "Cameroon",
+      capitale: "Yaoundé",
+      popolazione: 27000000,
+      superficie: 475442,
+      pilProCapite: 1200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 4060
+    },
+    {
+      nome: "Democratic Republic of the Congo",
+      capitale: "Kinshasa",
+      popolazione: 108000000,
+      superficie: 2344858,
+      pilProCapite: 550,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 4,
+      altezzaMonte: 5109
+    },
+    {
+      nome: "Republic of Congo",
+      capitale: "Brazzaville",
+      popolazione: 5500000,
+      superficie: 342000,
+      pilProCapite: 2800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1022
+    },
+    {
+      nome: "Colombia",
+      capitale: "Bogotà",
+      popolazione: 51000000,
+      superficie: 1141748,
+      pilProCapite: 6500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1810,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 5775
+    },
+    {
+      nome: "Costa Rica",
+      capitale: "San José",
+      popolazione: 5100000,
+      superficie: 51100,
+      pilProCapite: 12500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1821,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 3820
+    },
+    {
+      nome: "Cuba",
+      capitale: "L'Avana",
+      popolazione: 11200000,
+      superficie: 109884,
+      pilProCapite: 9500,
+      formaDiGoverno: "Dittatura",
+      colonizzato: 1,
+      indipendenza: 1902,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 1974
+    },
+    {
+      nome: "Czech Republic",
+      capitale: "Praga",
+      popolazione: 10700000,
+      superficie: 78865,
+      pilProCapite: 23000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1918,
+      lingua: "Ceco",
+      numColoriBandiera: 3,
+      altezzaMonte: 1603
+    },
+    {
+      nome: "Germany",
+      capitale: "Berlino",
+      popolazione: 83000000,
+      superficie: 357386,
+      pilProCapite: 48000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1871,
+      lingua: "Tedesco",
+      numColoriBandiera: 3,
+      altezzaMonte: 2962
+    },
+    {
+      nome: "Djibouti",
+      capitale: "Gibuti",
+      popolazione: 900000,
+      superficie: 23200,
+      pilProCapite: 3500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1977,
+      lingua: "Francese",
+      numColoriBandiera: 4,
+      altezzaMonte: 2028
+    },
+    {
+      nome: "Denmark",
+      capitale: "Copenaghen",
+      popolazione: 5800000,
+      superficie: 43094,
+      pilProCapite: 60000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1849,
+      lingua: "Danese",
+      numColoriBandiera: 2,
+      altezzaMonte: 171
+    },
+    {
+      nome: "Dominican Republic",
+      capitale: "Santo Domingo",
+      popolazione: 10700000,
+      superficie: 48730,
+      pilProCapite: 8400,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1844,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 3175
+    },
+    {
+      nome: "Algeria",
+      capitale: "Algeri",
+      popolazione: 43000000,
+      superficie: 2381741,
+      pilProCapite: 4200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1962,
+      lingua: "Arabo",
+      numColoriBandiera: 2,
+      altezzaMonte: 4208
+    },
+    {
+      nome: "Ecuador",
+      capitale: "Quito",
+      popolazione: 17600000,
+      superficie: 283561,
+      pilProCapite: 6100,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1822,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 6263
+    },
+    {
+      nome: "Egypt",
+      capitale: "Il Cairo",
+      popolazione: 102000000,
+      superficie: 1010408,
+      pilProCapite: 3600,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1922,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 2629
+    },
+    {
+      nome: "Eritrea",
+      capitale: "Asmara",
+      popolazione: 3546000,
+      superficie: 117600,
+      pilProCapite: 1500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1993,
+      lingua: "Tigrino",
+      numColoriBandiera: 4,
+      altezzaMonte: 3018
+    },
+    {
+      nome: "Estonia",
+      capitale: "Tallinn",
+      popolazione: 1330000,
+      superficie: 45227,
+      pilProCapite: 33000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1918,
+      lingua: "Estone",
+      numColoriBandiera: 3,
+      altezzaMonte: 318
+    },
+    {
+      nome: "Ethiopia",
+      capitale: "Addis Abeba",
+      popolazione: 112000000,
+      superficie: 1104300,
+      pilProCapite: 2500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1941,
+      lingua: "Amarico",
+      numColoriBandiera: 3,
+      altezzaMonte: 4550
+    },
+    {
+      nome: "Finland",
+      capitale: "Helsinki",
+      popolazione: 5520000,
+      superficie: 338145,
+      pilProCapite: 48000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1917,
+      lingua: "Finlandese",
+      numColoriBandiera: 2,
+      altezzaMonte: 1328
+    },
+    {
+      nome: "Gabon",
+      capitale: "Libreville",
+      popolazione: 2200000,
+      superficie: 267667,
+      pilProCapite: 8000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1410
+    },
+    {
+      nome: "United Kingdom",
+      capitale: "Londra",
+      popolazione: 67000000,
+      superficie: 243610,
+      pilProCapite: 43000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 9999,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1345
+    },
+    {
+      nome: "Georgia",
+      capitale: "Tbilisi",
+      popolazione: 3700000,
+      superficie: 69700,
+      pilProCapite: 4500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1991,
+      lingua: "Georgiano",
+      numColoriBandiera: 5,
+      altezzaMonte: 5193
+    },
+    {
+      nome: "Ghana",
+      capitale: "Accra",
+      popolazione: 31000000,
+      superficie: 238533,
+      pilProCapite: 5000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1957,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 883
+    },
+    {
+      nome: "Guinea",
+      capitale: "Conakry",
+      popolazione: 12700000,
+      superficie: 245857,
+      pilProCapite: 2200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1958,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1752
+    },
+    {
+      nome: "Gambia",
+      capitale: "Banjul",
+      popolazione: 2400000,
+      superficie: 11295,
+      pilProCapite: 800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1965,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 53
+    },
+    {
+      nome: "Guinea-Bissau",
+      capitale: "Bissau",
+      popolazione: 2000000,
+      superficie: 36125,
+      pilProCapite: 1200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1973,
+      lingua: "Portoghese",
+      numColoriBandiera: 3,
+      altezzaMonte: 262
+    },
+    {
+      nome: "Equatorial Guinea",
+      capitale: "Malabo",
+      popolazione: 1400000,
+      superficie: 28051,
+      pilProCapite: 8000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1968,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 3011
+    },
+    {
+      nome: "Greece",
+      capitale: "Atene",
+      popolazione: 10700000,
+      superficie: 131957,
+      pilProCapite: 20000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1830,
+      lingua: "Greco",
+      numColoriBandiera: 2,
+      altezzaMonte: 2918
+    },
+    {
+      nome: "Guatemala",
+      capitale: "Città del Guatemala",
+      popolazione: 17000000,
+      superficie: 108889,
+      pilProCapite: 4800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1821,
+      lingua: "Spagnolo",
+      numColoriBandiera: 2,
+      altezzaMonte: 4220
+    },
+    {
+      nome: "Guyana",
+      capitale: "Georgetown",
+      popolazione: 780000,
+      superficie: 214969,
+      pilProCapite: 7500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1966,
+      lingua: "Inglese",
+      numColoriBandiera: 4,
+      altezzaMonte: 2750
+    },
+    {
+      nome: "Honduras",
+      capitale: "Tegucigalpa",
+      popolazione: 9900000,
+      superficie: 112492,
+      pilProCapite: 5200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1821,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 2870
+    },
+    {
+      nome: "Croatia",
+      capitale: "Zagabria",
+      popolazione: 4100000,
+      superficie: 56594,
+      pilProCapite: 16000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1991,
+      lingua: "Croato",
+      numColoriBandiera: 3,
+      altezzaMonte: 1831
+    },
+    {
+      nome: "Haiti",
+      capitale: "Port-au-Prince",
+      popolazione: 11400000,
+      superficie: 27750,
+      pilProCapite: 1300,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1804,
+      lingua: "Francese",
+      numColoriBandiera: 2,
+      altezzaMonte: 2680
+    },
+    {
+      nome: "Hungary",
+      capitale: "Budapest",
+      popolazione: 9770000,
+      superficie: 93028,
+      pilProCapite: 18000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1918,
+      lingua: "Ungherese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1014
+    },
+    {
+      nome: "Indonesia",
+      capitale: "Giacarta",
+      popolazione: 267000000,
+      superficie: 1904569,
+      pilProCapite: 4200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1945,
+      lingua: "Indonesiano",
+      numColoriBandiera: 2,
+      altezzaMonte: 4884
+    },
+    {
+      nome: "India",
+      capitale: "Nuova Delhi",
+      popolazione: 1353000000,
+      superficie: 3287263,
+      pilProCapite: 2100,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1947,
+      lingua: "Hindi",
+      numColoriBandiera: 3,
+      altezzaMonte: 8848
+    },
+    {
+      nome: "Ireland",
+      capitale: "Dublino",
+      popolazione: 4900000,
+      superficie: 70273,
+      pilProCapite: 78000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1922,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1038
+    },
+    {
+      nome: "Iran",
+      capitale: "Teheran",
+      popolazione: 82000000,
+      superficie: 1648195,
+      pilProCapite: 5500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1501,
+      lingua: "Persiano",
+      numColoriBandiera: 3,
+      altezzaMonte: 5610
+    },
+    {
+      nome: "Iraq",
+      capitale: "Baghdad",
+      popolazione: 38000000,
+      superficie: 438317,
+      pilProCapite: 5500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1932,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 3611
+    },
+    {
+      nome: "Iceland",
+      capitale: "Reykjavík",
+      popolazione: 360000,
+      superficie: 103000,
+      pilProCapite: 67000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1944,
+      lingua: "Islandese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2110
+    },
+    {
+      nome: "Israel",
+      capitale: "Gerusalemme",
+      popolazione: 9000000,
+      superficie: 20770,
+      pilProCapite: 43000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1948,
+      lingua: "Ebraico",
+      numColoriBandiera: 2,
+      altezzaMonte: 1208
+    },
+    {
+      nome: "Italy",
+      capitale: "Roma",
+      popolazione: 60480000,
+      superficie: 301340,
+      pilProCapite: 35000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1861,
+      lingua: "Italiano",
+      numColoriBandiera: 3,
+      altezzaMonte: 4810
+    },
+    {
+      nome: "Jamaica",
+      capitale: "Kingston",
+      popolazione: 3000000,
+      superficie: 10991,
+      pilProCapite: 5000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1962,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2256
+    },
+    {
+      nome: "Jordan",
+      capitale: "Amman",
+      popolazione: 10200000,
+      superficie: 89342,
+      pilProCapite: 5000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1946,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 1854
+    },
+    {
+      nome: "Japan",
+      capitale: "Tokyo",
+      popolazione: 126500000,
+      superficie: 377975,
+      pilProCapite: 40000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 660,
+      lingua: "Giapponese",
+      numColoriBandiera: 2,
+      altezzaMonte: 3776
+    },
+    {
+      nome: "Kazakhstan",
+      capitale: "Astana",
+      popolazione: 18770000,
+      superficie: 2724900,
+      pilProCapite: 9500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1991,
+      lingua: "Kazako",
+      numColoriBandiera: 2,
+      altezzaMonte: 7010
+    },
+    {
+      nome: "Kenya",
+      capitale: "Nairobi",
+      popolazione: 52500000,
+      superficie: 580367,
+      pilProCapite: 4300,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1963,
+      lingua: "Swahili",
+      numColoriBandiera: 4,
+      altezzaMonte: 5199
+    },
+    {
+      nome: "Kyrgyzstan",
+      capitale: "Bishkek",
+      popolazione: 6500000,
+      superficie: 199951,
+      pilProCapite: 4300,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1991,
+      lingua: "Kirghiso",
+      numColoriBandiera: 2,
+      altezzaMonte: 7439
+    },
+    {
+      nome: "Cambodia",
+      capitale: "Phnom Penh",
+      popolazione: 16700000,
+      superficie: 181035,
+      pilProCapite: 1700,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1953,
+      lingua: "Khmer",
+      numColoriBandiera: 3,
+      altezzaMonte: 1810
+    },
+    {
+      nome: "South Korea",
+      capitale: "Seoul",
+      popolazione: 51700000,
+      superficie: 100210,
+      pilProCapite: 32000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1945,
+      lingua: "Coreano",
+      numColoriBandiera: 5,
+      altezzaMonte: 1950
+    },
+    {
+      nome: "Kuwait",
+      capitale: "Kuwait City",
+      popolazione: 4300000,
+      superficie: 17818,
+      pilProCapite: 34500,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1961,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 306
+    },
+    {
+      nome: "Laos",
+      capitale: "Vientiane",
+      popolazione: 7000000,
+      superficie: 236800,
+      pilProCapite: 2500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1953,
+      lingua: "Lao",
+      numColoriBandiera: 3,
+      altezzaMonte: 2815
+    },
+    {
+      nome: "Lebanon",
+      capitale: "Beirut",
+      popolazione: 6000000,
+      superficie: 10452,
+      pilProCapite: 8200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1943,
+      lingua: "Arabo",
+      numColoriBandiera: 2,
+      altezzaMonte: 3088
+    },
+    {
+      nome: "Liberia",
+      capitale: "Monrovia",
+      popolazione: 4900000,
+      superficie: 111369,
+      pilProCapite: 1500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1847,
+      lingua: "Inglese",
+      numColoriBandiera: 2,
+      altezzaMonte: 1443
+    },
+    {
+      nome: "Libya",
+      capitale: "Tripoli",
+      popolazione: 6900000,
+      superficie: 1759540,
+      pilProCapite: 7000,
+      formaDiGoverno: "Dittatura",
+      colonizzato: 1,
+      indipendenza: 1951,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 2323
+    },
+    {
+      nome: "Sri Lanka",
+      capitale: "Sri Jayawardenepura Kotte",
+      popolazione: 21500000,
+      superficie: 65610,
+      pilProCapite: 4200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1948,
+      lingua: "Singalese",
+      numColoriBandiera: 4,
+      altezzaMonte: 2524
+    },
+    {
+      nome: "Lesotho",
+      capitale: "Maseru",
+      popolazione: 2000000,
+      superficie: 30355,
+      pilProCapite: 1200,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1966,
+      lingua: "Sesotho",
+      numColoriBandiera: 3,
+      altezzaMonte: 3482
+    },
+    {
+      nome: "Lithuania",
+      capitale: "Vilnius",
+      popolazione: 2800000,
+      superficie: 65300,
+      pilProCapite: 20000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1918,
+      lingua: "Lituano",
+      numColoriBandiera: 3,
+      altezzaMonte: 294
+    },
+    {
+      nome: "Luxembourg",
+      capitale: "Lussemburgo",
+      popolazione: 630000,
+      superficie: 2586,
+      pilProCapite: 115000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1839,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 560
+    },
+    {
+      nome: "Latvia",
+      capitale: "Riga",
+      popolazione: 1900000,
+      superficie: 64589,
+      pilProCapite: 21000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1918,
+      lingua: "Lettone",
+      numColoriBandiera: 2,
+      altezzaMonte: 311
+    },
+    {
+      nome: "Morocco",
+      capitale: "Rabat",
+      popolazione: 36000000,
+      superficie: 446550,
+      pilProCapite: 8200,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1956,
+      lingua: "Arabo",
+      numColoriBandiera: 2,
+      altezzaMonte: 4167
+    },
+    {
+      nome: "Moldova",
+      capitale: "Chisinau",
+      popolazione: 2650000,
+      superficie: 33846,
+      pilProCapite: 5400,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1991,
+      lingua: "Rumeno",
+      numColoriBandiera: 3,
+      altezzaMonte: 430
+    },
+    {
+      nome: "Madagascar",
+      capitale: "Antananarivo",
+      popolazione: 26000000,
+      superficie: 587041,
+      pilProCapite: 1500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2876
+    },
+    {
+      nome: "Mexico",
+      capitale: "Città del Messico",
+      popolazione: 126000000,
+      superficie: 1964375,
+      pilProCapite: 9800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1821,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 5636
+    },
+    {
+      nome: "Macedonia",
+      capitale: "Skopje",
+      popolazione: 2080000,
+      superficie: 25713,
+      pilProCapite: 6000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1991,
+      lingua: "Macedone",
+      numColoriBandiera: 1,
+      altezzaMonte: 2764
+    },
+    {
+      nome: "Mali",
+      capitale: "Bamako",
+      popolazione: 19600000,
+      superficie: 1240192,
+      pilProCapite: 2500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1155
+    },
+    {
+      nome: "Myanmar",
+      capitale: "Naypyidaw",
+      popolazione: 54000000,
+      superficie: 676578,
+      pilProCapite: 1400,
+      formaDiGoverno: "Dittatura",
+      colonizzato: 1,
+      indipendenza: 1948,
+      lingua: "Birmano",
+      numColoriBandiera: 3,
+      altezzaMonte: 5881
+    },
+    {
+      nome: "Montenegro",
+      capitale: "Podgorica",
+      popolazione: 620000,
+      superficie: 13812,
+      pilProCapite: 8700,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 2006,
+      lingua: "Montenegrino",
+      numColoriBandiera: 2,
+      altezzaMonte: 2534
+    },
+    {
+      nome: "Mongolia",
+      capitale: "Ulaanbaatar",
+      popolazione: 3300000,
+      superficie: 1564116,
+      pilProCapite: 4500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1921,
+      lingua: "Mongolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 4374
+    },
+    {
+      nome: "Mozambique",
+      capitale: "Maputo",
+      popolazione: 30000000,
+      superficie: 801590,
+      pilProCapite: 1400,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1975,
+      lingua: "Portoghese",
+      numColoriBandiera: 4,
+      altezzaMonte: 2436
+    },
+    {
+      nome: "Mauritania",
+      capitale: "Nouakchott",
+      popolazione: 4700000,
+      superficie: 1030700,
+      pilProCapite: 1500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Arabo",
+      numColoriBandiera: 2,
+      altezzaMonte: 915
+    },
+    {
+      nome: "Malawi",
+      capitale: "Lilongwe",
+      popolazione: 19000000,
+      superficie: 118484,
+      pilProCapite: 1200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1964,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 3002
+    },
+    {
+      nome: "Malaysia",
+      capitale: "Kuala Lumpur",
+      popolazione: 32700000,
+      superficie: 330803,
+      pilProCapite: 11000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1957,
+      lingua: "Malese",
+      numColoriBandiera: 2,
+      altezzaMonte: 4095
+    },
+    {
+      nome: "Namibia",
+      capitale: "Windhoek",
+      popolazione: 2500000,
+      superficie: 825615,
+      pilProCapite: 6000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1990,
+      lingua: "Inglese",
+      numColoriBandiera: 4,
+      altezzaMonte: 2606
+    },
+    {
+      nome: "Niger",
+      capitale: "Niamey",
+      popolazione: 24000000,
+      superficie: 1267000,
+      pilProCapite: 1300,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2022
+    },
+    {
+      nome: "Nigeria",
+      capitale: "Abuja",
+      popolazione: 206000000,
+      superficie: 923768,
+      pilProCapite: 2200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2419
+    },
+    {
+      nome: "Nicaragua",
+      capitale: "Managua",
+      popolazione: 6600000,
+      superficie: 130373,
+      pilProCapite: 2000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1821,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 2387
+    },
+    {
+      nome: "Norway",
+      capitale: "Oslo",
+      popolazione: 5400000,
+      superficie: 385207,
+      pilProCapite: 82000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 872,
+      lingua: "Norvegese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2469
+    },
+    {
+      nome: "Nepal",
+      capitale: "Kathmandu",
+      popolazione: 30000000,
+      superficie: 147516,
+      pilProCapite: 1200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1768,
+      lingua: "Nepalese",
+      numColoriBandiera: 2,
+      altezzaMonte: 8848
+    },
+    {
+      nome: "Oman",
+      capitale: "Mascate",
+      popolazione: 5000000,
+      superficie: 309500,
+      pilProCapite: 17000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1650,
+      lingua: "Arabo",
+      numColoriBandiera: 2,
+      altezzaMonte: 2990
+    },
+    {
+      nome: "Pakistan",
+      capitale: "Islamabad",
+      popolazione: 225000000,
+      superficie: 881913,
+      pilProCapite: 6000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1947,
+      lingua: "Urdu",
+      numColoriBandiera: 2,
+      altezzaMonte: 8611
+    },
+    {
+      nome: "Panama",
+      capitale: "Città di Panama",
+      popolazione: 4300000,
+      superficie: 75417,
+      pilProCapite: 16000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1903,
+      lingua: "Spagnolo",
+      numColoriBandiera: 2,
+      altezzaMonte: 3475
+    },
+    {
+      nome: "Peru",
+      capitale: "Lima",
+      popolazione: 33000000,
+      superficie: 1285216,
+      pilProCapite: 7000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1821,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 6768
+    },
+    {
+      nome: "Philippines",
+      capitale: "Manila",
+      popolazione: 108000000,
+      superficie: 300000,
+      pilProCapite: 3300,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1946,
+      lingua: "Filippino",
+      numColoriBandiera: 3,
+      altezzaMonte: 2954
+    },
+    {
+      nome: "Papua New Guinea",
+      capitale: "Port Moresby",
+      popolazione: 9000000,
+      superficie: 462840,
+      pilProCapite: 2300,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1975,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 4509
+    },
+    {
+      nome: "Poland",
+      capitale: "Varsavia",
+      popolazione: 38000000,
+      superficie: 312679,
+      pilProCapite: 18000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1918,
+      lingua: "Polacco",
+      numColoriBandiera: 2,
+      altezzaMonte: 2499
+    },
+    {
+      nome: "North Korea",
+      capitale: "Pyongyang",
+      popolazione: 26000000,
+      superficie: 120540,
+      pilProCapite: 1200,
+      formaDiGoverno: "Dittatura",
+      colonizzato: 0,
+      indipendenza: 1948,
+      lingua: "Coreano",
+      numColoriBandiera: 3,
+      altezzaMonte: 2750
+    },
+    {
+      nome: "Paraguay",
+      capitale: "Asunción",
+      popolazione: 7100000,
+      superficie: 406752,
+      pilProCapite: 5500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1811,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 842
+    },
+    {
+      nome: "Palestine",
+      capitale: "Ramallah",
+      popolazione: 5000000,
+      superficie: 6020,
+      pilProCapite: 3600,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1988,
+      lingua: "Arabo",
+      numColoriBandiera: 4,
+      altezzaMonte: 1026
+    },
+    {
+      nome: "Qatar",
+      capitale: "Doha",
+      popolazione: 2900000,
+      superficie: 11586,
+      pilProCapite: 61000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1971,
+      lingua: "Arabo",
+      numColoriBandiera: 2,
+      altezzaMonte: 103
+    },
+    {
+      nome: "Romania",
+      capitale: "Bucarest",
+      popolazione: 19200000,
+      superficie: 238397,
+      pilProCapite: 14000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1877,
+      lingua: "Rumeno",
+      numColoriBandiera: 3,
+      altezzaMonte: 2544
+    },
+    {
+      nome: "Rwanda",
+      capitale: "Kigali",
+      popolazione: 12900000,
+      superficie: 26338,
+      pilProCapite: 2200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1962,
+      lingua: "Kinyarwanda",
+      numColoriBandiera: 4,
+      altezzaMonte: 4507
+    },
+    {
+      nome: "Western Sahara",
+      capitale: "El Aaiún",
+      popolazione: 500000,
+      superficie: 266000,
+      pilProCapite: 2000,
+      formaDiGoverno: "Dittatura",
+      colonizzato: 1,
+      indipendenza: 9999,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 2080
+    },
+    {
+      nome: "Saudi Arabia",
+      capitale: "Riyadh",
+      popolazione: 34800000,
+      superficie: 2149690,
+      pilProCapite: 23000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1932,
+      lingua: "Arabo",
+      numColoriBandiera: 1,
+      altezzaMonte: 3740
+    },
+    {
+      nome: "Sudan",
+      capitale: "Khartoum",
+      popolazione: 45000000,
+      superficie: 1861484,
+      pilProCapite: 4700,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1956,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 3083
+    },
+    {
+      nome: "South Sudan",
+      capitale: "Juba",
+      popolazione: 12000000,
+      superficie: 619745,
+      pilProCapite: 1000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 2011,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 3187
+    },
+    {
+      nome: "Senegal",
+      capitale: "Dakar",
+      popolazione: 17000000,
+      superficie: 196722,
+      pilProCapite: 1500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 648
+    },
+    {
+      nome: "Sierra Leone",
+      capitale: "Freetown",
+      popolazione: 8000000,
+      superficie: 71740,
+      pilProCapite: 1500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1961,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1948
+    },
+    {
+      nome: "El Salvador",
+      capitale: "San Salvador",
+      popolazione: 6500000,
+      superficie: 21041,
+      pilProCapite: 4200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1821,
+      lingua: "Spagnolo",
+      numColoriBandiera: 2,
+      altezzaMonte: 2730
+    },
+    {
+      nome: "Serbia",
+      capitale: "Belgrado",
+      popolazione: 6900000,
+      superficie: 88361,
+      pilProCapite: 7800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1878,
+      lingua: "Serbo",
+      numColoriBandiera: 3,
+      altezzaMonte: 2169
+    },
+    {
+      nome: "Suriname",
+      capitale: "Paramaribo",
+      popolazione: 600000,
+      superficie: 163820,
+      pilProCapite: 6500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1975,
+      lingua: "Olandese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1230
+    },
+    {
+      nome: "Slovakia",
+      capitale: "Bratislava",
+      popolazione: 5400000,
+      superficie: 49037,
+      pilProCapite: 19000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1993,
+      lingua: "Slovacco",
+      numColoriBandiera: 3,
+      altezzaMonte: 2655
+    },
+    {
+      nome: "Slovenia",
+      capitale: "Lubiana",
+      popolazione: 2100000,
+      superficie: 20273,
+      pilProCapite: 24000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1991,
+      lingua: "Sloveno",
+      numColoriBandiera: 3,
+      altezzaMonte: 2864
+    },
+    {
+      nome: "Sweden",
+      capitale: "Stoccolma",
+      popolazione: 10300000,
+      superficie: 450295,
+      pilProCapite: 58000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1523,
+      lingua: "Svedese",
+      numColoriBandiera: 2,
+      altezzaMonte: 2106
+    },
+    {
+      nome: "Swaziland",
+      capitale: "Mbabane",
+      popolazione: 1150000,
+      superficie: 17364,
+      pilProCapite: 4000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1968,
+      lingua: "Inglese",
+      numColoriBandiera: 4,
+      altezzaMonte: 1862
+    },
+    {
+      nome: "Syria",
+      capitale: "Damasco",
+      popolazione: 17000000,
+      superficie: 185180,
+      pilProCapite: 2000,
+      formaDiGoverno: "Dittatura",
+      colonizzato: 1,
+      indipendenza: 1946,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 2814
+    },
+    {
+      nome: "Chad",
+      capitale: "N'Djamena",
+      popolazione: 16000000,
+      superficie: 1284000,
+      pilProCapite: 2200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 3412
+    },
+    {
+      nome: "Togo",
+      capitale: "Lomé",
+      popolazione: 8200000,
+      superficie: 56785,
+      pilProCapite: 1600,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Francese",
+      numColoriBandiera: 2,
+      altezzaMonte: 986
+    },
+    {
+      nome: "Thailand",
+      capitale: "Bangkok",
+      popolazione: 70000000,
+      superficie: 513120,
+      pilProCapite: 7900,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1238,
+      lingua: "Thailandese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2565
+    },
+    {
+      nome: "Tajikistan",
+      capitale: "Dushanbe",
+      popolazione: 9600000,
+      superficie: 143100,
+      pilProCapite: 8500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1991,
+      lingua: "Tagiko",
+      numColoriBandiera: 3,
+      altezzaMonte: 7495
+    },
+    {
+      nome: "Turkmenistan",
+      capitale: "Ashgabat",
+      popolazione: 6000000,
+      superficie: 488100,
+      pilProCapite: 7000,
+      formaDiGoverno: "Dittatura",
+      colonizzato: 1,
+      indipendenza: 1991,
+      lingua: "Turkmeno",
+      numColoriBandiera: 2,
+      altezzaMonte: 3137
+    },
+    {
+      nome: "Timor-Leste",
+      capitale: "Dili",
+      popolazione: 1300000,
+      superficie: 14874,
+      pilProCapite: 1800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 2002,
+      lingua: "Portoghese",
+      numColoriBandiera: 2,
+      altezzaMonte: 2963
+    },
+    {
+      nome: "Tunisia",
+      capitale: "Tunisi",
+      popolazione: 12000000,
+      superficie: 163610,
+      pilProCapite: 11700,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1956,
+      lingua: "Arabo",
+      numColoriBandiera: 2,
+      altezzaMonte: 1544
+    },
+    {
+      nome: "Turkey",
+      capitale: "Ankara",
+      popolazione: 83000000,
+      superficie: 783562,
+      pilProCapite: 9500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1923,
+      lingua: "Turco",
+      numColoriBandiera: 2,
+      altezzaMonte: 5137
+    },
+    {
+      nome: "Taiwan",
+      capitale: "Taipei",
+      popolazione: 23500000,
+      superficie: 36197,
+      pilProCapite: 25500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1945,
+      lingua: "Cinese Mandarino",
+      numColoriBandiera: 3,
+      altezzaMonte: 3952
+    },
+    {
+      nome: "Tanzania",
+      capitale: "Dodoma",
+      popolazione: 58000000,
+      superficie: 945087,
+      pilProCapite: 1100,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1961,
+      lingua: "Swahili",
+      numColoriBandiera: 4,
+      altezzaMonte: 5895
+    },
+    {
+      nome: "Uganda",
+      capitale: "Kampala",
+      popolazione: 45000000,
+      superficie: 241038,
+      pilProCapite: 900,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1962,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 5109
+    },
+    {
+      nome: "Ukraine",
+      capitale: "Kiev",
+      popolazione: 42000000,
+      superficie: 603628,
+      pilProCapite: 12400,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1991,
+      lingua: "Ucraino",
+      numColoriBandiera: 2,
+      altezzaMonte: 2061
+    },
+    {
+      nome: "Uruguay",
+      capitale: "Montevideo",
+      popolazione: 3500000,
+      superficie: 176215,
+      pilProCapite: 17000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1828,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 514
+    },
+    {
+      nome: "Uzbekistan",
+      capitale: "Tashkent",
+      popolazione: 34000000,
+      superficie: 447400,
+      pilProCapite: 5600,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1991,
+      lingua: "Uzbeco",
+      numColoriBandiera: 3,
+      altezzaMonte: 4643
+    },
+    {
+      nome: "Venezuela",
+      capitale: "Caracas",
+      popolazione: 28500000,
+      superficie: 916445,
+      pilProCapite: 7000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1811,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 4978
+    },
+    {
+      nome: "Vietnam",
+      capitale: "Hanoi",
+      popolazione: 96000000,
+      superficie: 331212,
+      pilProCapite: 3500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1945,
+      lingua: "Vietnamita",
+      numColoriBandiera: 1,
+      altezzaMonte: 3143
+    },
+    {
+      nome: "Yemen",
+      capitale: "Sana'a",
+      popolazione: 30000000,
+      superficie: 527968,
+      pilProCapite: 2200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1990,
+      lingua: "Arabo",
+      numColoriBandiera: 3,
+      altezzaMonte: 3666
+    },
+    {
+      nome: "Zambia",
+      capitale: "Lusaka",
+      popolazione: 18000000,
+      superficie: 752612,
+      pilProCapite: 4300,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1964,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2301
+    },
+    {
+      nome: "Zimbabwe",
+      capitale: "Harare",
+      popolazione: 14800000,
+      superficie: 390757,
+      pilProCapite: 2400,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1980,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2592
+    },
+    {
+      nome: "Somalia",
+      capitale: "Mogadiscio",
+      popolazione: 15000000,
+      superficie: 637657,
+      pilProCapite: 600,
+      formaDiGoverno: "Dittatura",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Somalo",
+      numColoriBandiera: 1,
+      altezzaMonte: 2450
+    },
+    {
+      nome: "Kosovo",
+      capitale: "Pristina",
+      popolazione: 1800000,
+      superficie: 10908,
+      pilProCapite: 4500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 2008,
+      lingua: "Albanese",
+      numColoriBandiera: 2,
+      altezzaMonte: 2656
+    },
+    {
+      nome: "South Africa",
+      capitale: "Pretoria",
+      popolazione: 59000000,
+      superficie: 1219090,
+      pilProCapite: 6000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1910,
+      lingua: "Inglese",
+      numColoriBandiera: 6,
+      altezzaMonte: 3482
+    },
+    {
+      nome: "New Zealand",
+      capitale: "Wellington",
+      popolazione: 5000000,
+      superficie: 268021,
+      pilProCapite: 48000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1907,
+      lingua: "Inglese",
+      numColoriBandiera: 2,
+      altezzaMonte: 3724
+    },
+    {
+      nome: "Chile",
+      capitale: "Santiago",
+      popolazione: 19000000,
+      superficie: 756102,
+      pilProCapite: 15000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1818,
+      lingua: "Spagnolo",
+      numColoriBandiera: 2,
+      altezzaMonte: 6893
+    },
+    {
+      nome: "Netherlands",
+      capitale: "Amsterdam",
+      popolazione: 17400000,
+      superficie: 41543,
+      pilProCapite: 58000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1581,
+      lingua: "Olandese",
+      numColoriBandiera: 3,
+      altezzaMonte: 322
+    },
+    {
+      nome: "Portugal",
+      capitale: "Lisbona",
+      popolazione: 10200000,
+      superficie: 92212,
+      pilProCapite: 22000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1143,
+      lingua: "Portoghese",
+      numColoriBandiera: 2,
+      altezzaMonte: 1993
+    },
+    {
+      nome: "Russian Federation",
+      capitale: "Mosca",
+      popolazione: 144000000,
+      superficie: 17098246,
+      pilProCapite: 11200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 1991,
+      lingua: "Russo",
+      numColoriBandiera: 3,
+      altezzaMonte: 5642
+    },
+    {
+      nome: "Spain",
+      capitale: "Madrid",
+      popolazione: 47000000,
+      superficie: 505990,
+      pilProCapite: 30000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 0,
+      indipendenza: 1492,
+      lingua: "Spagnolo",
+      numColoriBandiera: 3,
+      altezzaMonte: 3478
+    },
+    {
+      nome: "France",
+      capitale: "Parigi",
+      popolazione: 67000000,
+      superficie: 643801,
+      pilProCapite: 42000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 0,
+      indipendenza: 843,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 4807
+    },
+    {
+      nome: "United States",
+      capitale: "Washington D.C.",
+      popolazione: 331000000,
+      superficie: 9833520,
+      pilProCapite: 70000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1776,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 6190
+    },
+    {
+      nome: "Anguilla",
+      capitale: "The Valley",
+      popolazione: 15000,
+      superficie: 91,
+      pilProCapite: 25000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 9999,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 65
+    },
+    {
+      nome: "Antigua and Barbuda",
+      capitale: "Saint John's",
+      popolazione: 98000,
+      superficie: 442,
+      pilProCapite: 17000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1981,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 402
+    },
+    {
+      nome: "Bahrain",
+      capitale: "Manama",
+      popolazione: 1700000,
+      superficie: 780,
+      pilProCapite: 25000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1971,
+      lingua: "Arabo",
+      numColoriBandiera: 2,
+      altezzaMonte: 134
+    },
+    {
+      nome: "Bahamas",
+      capitale: "Nassau",
+      popolazione: 400000,
+      superficie: 13940,
+      pilProCapite: 34000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1973,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 63
+    },
+    {
+      nome: "Barbados",
+      capitale: "Bridgetown",
+      popolazione: 290000,
+      superficie: 430,
+      pilProCapite: 18000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1966,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 340
+    },
+    {
+      nome: "Comoros",
+      capitale: "Moroni",
+      popolazione: 850000,
+      superficie: 2235,
+      pilProCapite: 1500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1975,
+      lingua: "Francese",
+      numColoriBandiera: 4,
+      altezzaMonte: 2361
+    },
+    {
+      nome: "Cape Verde",
+      capitale: "Praia",
+      popolazione: 550000,
+      superficie: 4033,
+      pilProCapite: 3800,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1975,
+      lingua: "Portoghese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1979
+    },
+    {
+      nome: "Cyprus",
+      capitale: "Nicosia",
+      popolazione: 1200000,
+      superficie: 9251,
+      pilProCapite: 28000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1960,
+      lingua: "Greco",
+      numColoriBandiera: 2,
+      altezzaMonte: 1952
+    },
+    {
+      nome: "Dominica",
+      capitale: "Roseau",
+      popolazione: 72000,
+      superficie: 751,
+      pilProCapite: 7500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1978,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1447
+    },
+    {
+      nome: "Falkland Islands",
+      capitale: "Stanley",
+      popolazione: 3500,
+      superficie: 12173,
+      pilProCapite: 24000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 9999,
+      lingua: "Inglese",
+      numColoriBandiera: 2,
+      altezzaMonte: 705
+    },
+    {
+      nome: "Faeroe Islands",
+      capitale: "Tórshavn",
+      popolazione: 53000,
+      superficie: 1399,
+      pilProCapite: 60000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 9999,
+      lingua: "Faroe",
+      numColoriBandiera: 3,
+      altezzaMonte: 882
+    },
+    {
+      nome: "Federated States of Micronesia",
+      capitale: "Palikir",
+      popolazione: 115000,
+      superficie: 702,
+      pilProCapite: 3500,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1986,
+      lingua: "Inglese",
+      numColoriBandiera: 1,
+      altezzaMonte: 782
+    },
+    {
+      nome: "Grenada",
+      capitale: "Saint George's",
+      popolazione: 112000,
+      superficie: 344,
+      pilProCapite: 11500,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1974,
+      lingua: "Inglese",
+      numColoriBandiera: 4,
+      altezzaMonte: 840
+    },
+    {
+      nome: "Saint Kitts and Nevis",
+      capitale: "Basseterre",
+      popolazione: 53000,
+      superficie: 261,
+      pilProCapite: 17000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1983,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1156
+    },
+    {
+      nome: "Saint Lucia",
+      capitale: "Castries",
+      popolazione: 180000,
+      superficie: 616,
+      pilProCapite: 11000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1979,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 950
+    },
+    {
+      nome: "Maldives",
+      capitale: "Malé",
+      popolazione: 540000,
+      superficie: 298,
+      pilProCapite: 10000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1965,
+      lingua: "Dhivehi",
+      numColoriBandiera: 2,
+      altezzaMonte: 5
+    },
+    {
+      nome: "Marshall Islands",
+      capitale: "Majuro",
+      popolazione: 59000,
+      superficie: 181,
+      pilProCapite: 4000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1986,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 10
+    },
+    {
+      nome: "Malta",
+      capitale: "La Valletta",
+      popolazione: 500000,
+      superficie: 316,
+      pilProCapite: 32000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1964,
+      lingua: "Maltese",
+      numColoriBandiera: 2,
+      altezzaMonte: 253
+    },
+    {
+      nome: "Montserrat",
+      capitale: "Plymouth",
+      popolazione: 5000,
+      superficie: 102,
+      pilProCapite: 17000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 9999,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 915
+    },
+    {
+      nome: "Mauritius",
+      capitale: "Port Louis",
+      popolazione: 1300000,
+      superficie: 2040,
+      pilProCapite: 12000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1968,
+      lingua: "Inglese",
+      numColoriBandiera: 4,
+      altezzaMonte: 828
+    },
+    {
+      nome: "New Caledonia",
+      capitale: "Nouméa",
+      popolazione: 280000,
+      superficie: 18575,
+      pilProCapite: 26000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 9999,
+      lingua: "Francese",
+      numColoriBandiera: 2,
+      altezzaMonte: 1628
+    },
+    {
+      nome: "Nauru",
+      capitale: "Yaren",
+      popolazione: 13000,
+      superficie: 21,
+      pilProCapite: 10000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1968,
+      lingua: "Inglese",
+      numColoriBandiera: 2,
+      altezzaMonte: 71
+    },
+    {
+      nome: "Palau",
+      capitale: "Ngerulmud",
+      popolazione: 18000,
+      superficie: 459,
+      pilProCapite: 15000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1994,
+      lingua: "Inglese",
+      numColoriBandiera: 4,
+      altezzaMonte: 242
+    },
+    {
+      nome: "French Polynesia",
+      capitale: "Papeete",
+      popolazione: 280000,
+      superficie: 4167,
+      pilProCapite: 19000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 9999,
+      lingua: "Francese",
+      numColoriBandiera: 2,
+      altezzaMonte: 2241
+    },
+    {
+      nome: "Solomon Islands",
+      capitale: "Honiara",
+      popolazione: 700000,
+      superficie: 28450,
+      pilProCapite: 2000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1978,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2335
+    },
+    {
+      nome: "Sao Tome and Principe",
+      capitale: "São Tomé",
+      popolazione: 220000,
+      superficie: 964,
+      pilProCapite: 2200,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1975,
+      lingua: "Portoghese",
+      numColoriBandiera: 3,
+      altezzaMonte: 2024
+    },
+    {
+      nome: "Seychelles",
+      capitale: "Victoria",
+      popolazione: 98000,
+      superficie: 455,
+      pilProCapite: 15000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1976,
+      lingua: "Francese",
+      numColoriBandiera: 3,
+      altezzaMonte: 905
+    },
+    {
+      nome: "Tonga",
+      capitale: "Nukuʻalofa",
+      popolazione: 105000,
+      superficie: 747,
+      pilProCapite: 4500,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1970,
+      lingua: "Inglese",
+      numColoriBandiera: 2,
+      altezzaMonte: 1033
+    },
+    {
+      nome: "Trinidad and Tobago",
+      capitale: "Port of Spain",
+      popolazione: 1400000,
+      superficie: 5128,
+      pilProCapite: 17000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1962,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 940
+    },
+    {
+      nome: "Tuvalu",
+      capitale: "Funafuti",
+      popolazione: 12000,
+      superficie: 26,
+      pilProCapite: 4000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1978,
+      lingua: "Inglese",
+      numColoriBandiera: 1,
+      altezzaMonte: 5
+    },
+    {
+      nome: "Saint Vincent and the Grenadines",
+      capitale: "Kingstown",
+      popolazione: 110000,
+      superficie: 389,
+      pilProCapite: 7000,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1979,
+      lingua: "Inglese",
+      numColoriBandiera: 3,
+      altezzaMonte: 1234
+    },
+    {
+      nome: "Vanuatu",
+      capitale: "Port Vila",
+      popolazione: 310000,
+      superficie: 12189,
+      pilProCapite: 3000,
+      formaDiGoverno: "Repubblica",
+      colonizzato: 1,
+      indipendenza: 1980,
+      lingua: "Bislama",
+      numColoriBandiera: 3,
+      altezzaMonte: 1879
+    },
+    {
+      nome: "Samoa",
+      capitale: "Apia",
+      popolazione: 200000,
+      superficie: 2842,
+      pilProCapite: 4800,
+      formaDiGoverno: "Monarchia",
+      colonizzato: 1,
+      indipendenza: 1962,
+      lingua: "Samoano",
+      numColoriBandiera: 2,
+      altezzaMonte: 1858
+    },
+    {
+      "nome": "Fiji",
+      "capitale": "Suva",
+      "popolazione": 890000,
+      "superficie": 18274,
+      "pilProCapite": 6500,
+      "formaDiGoverno": "Repubblica",
+      "colonizzato": 1,
+      "indipendenza": 1970,
+      "lingua": "Inglese",
+      "numColoriBandiera": 4,
+      "altezzaMonte": 1324
+    }];
+
+
+
+  const continenti = [
+    { nome: "Afghanistan", continente: "Asia" },
+    { nome: "Angola", continente: "Africa" },
+    { nome: "Albania", continente: "Europa" },
+    { nome: "United Arab Emirates", continente: "Asia" },
+    { nome: "Argentina", continente: "Americhe" },
+    { nome: "Armenia", continente: "Asia" },
+    { nome: "Australia", continente: "Oceania" },
+    { nome: "Austria", continente: "Europa" },
+    { nome: "Azerbaijan", continente: "Asia" },
+    { nome: "Burundi", continente: "Africa" },
+    { nome: "Belgium", continente: "Europa" },
+    { nome: "Benin", continente: "Africa" },
+    { nome: "Burkina Faso", continente: "Africa" },
+    { nome: "Bangladesh", continente: "Asia" },
+    { nome: "Bulgaria", continente: "Europa" },
+    { nome: "Bosnia and Herzegovina", continente: "Europa" },
+    { nome: "Belarus", continente: "Europa" },
+    { nome: "Belize", continente: "Americhe" },
+    { nome: "Bolivia", continente: "Americhe" },
+    { nome: "Brazil", continente: "Americhe" },
+    { nome: "Brunei Darussalam", continente: "Asia" },
+    { nome: "Bhutan", continente: "Asia" },
+    { nome: "Botswana", continente: "Africa" },
+    { nome: "Central African Republic", continente: "Africa" },
+    { nome: "Canada", continente: "Americhe" },
+    { nome: "Switzerland", continente: "Europa" },
+    { nome: "China", continente: "Asia" },
+    { nome: "Ivory Coast", continente: "Africa" },
+    { nome: "Cameroon", continente: "Africa" },
+    { nome: "Democratic Republic of the Congo", continente: "Africa" },
+    { nome: "Republic of Congo", continente: "Africa" },
+    { nome: "Colombia", continente: "Americhe" },
+    { nome: "Costa Rica", continente: "Americhe" },
+    { nome: "Cuba", continente: "Americhe" },
+    { nome: "Czech Republic", continente: "Europa" },
+    { nome: "Germany", continente: "Europa" },
+    { nome: "Djibouti", continente: "Africa" },
+    { nome: "Denmark", continente: "Europa" },
+    { nome: "Dominican Republic", continente: "Americhe" },
+    { nome: "Algeria", continente: "Africa" },
+    { nome: "Ecuador", continente: "Americhe" },
+    { nome: "Egypt", continente: "Africa" },
+    { nome: "Eritrea", continente: "Africa" },
+    { nome: "Estonia", continente: "Europa" },
+    { nome: "Ethiopia", continente: "Africa" },
+    { nome: "Finland", continente: "Europa" },
+    { nome: "Gabon", continente: "Africa" },
+    { nome: "United Kingdom", continente: "Europa" },
+    { nome: "Georgia", continente: "Asia" },
+    { nome: "Ghana", continente: "Africa" },
+    { nome: "Guinea", continente: "Africa" },
+    { nome: "Gambia", continente: "Africa" },
+    { nome: "Guinea-Bissau", continente: "Africa" },
+    { nome: "Equatorial Guinea", continente: "Africa" },
+    { nome: "Greece", continente: "Europa" },
+    { nome: "Guatemala", continente: "Americhe" },
+    { nome: "Guyana", continente: "Americhe" },
+    { nome: "Honduras", continente: "Americhe" },
+    { nome: "Croatia", continente: "Europa" },
+    { nome: "Haiti", continente: "Americhe" },
+    { nome: "Hungary", continente: "Europa" },
+    { nome: "Indonesia", continente: "Asia" },
+    { nome: "India", continente: "Asia" },
+    { nome: "Ireland", continente: "Europa" },
+    { nome: "Iran", continente: "Asia" },
+    { nome: "Iraq", continente: "Asia" },
+    { nome: "Iceland", continente: "Europa" },
+    { nome: "Israel", continente: "Asia" },
+    { nome: "Italy", continente: "Europa" },
+    { nome: "Jamaica", continente: "Americhe" },
+    { nome: "Jordan", continente: "Asia" },
+    { nome: "Japan", continente: "Asia" },
+    { nome: "Kazakhstan", continente: "Asia" },
+    { nome: "Kenya", continente: "Africa" },
+    { nome: "Kyrgyzstan", continente: "Asia" },
+    { nome: "Cambodia", continente: "Asia" },
+    { nome: "South Korea", continente: "Asia" },
+    { nome: "Kuwait", continente: "Asia" },
+    { nome: "Laos", continente: "Asia" },
+    { nome: "Lebanon", continente: "Asia" },
+    { nome: "Liberia", continente: "Africa" },
+    { nome: "Libya", continente: "Africa" },
+    { nome: "Sri Lanka", continente: "Asia" },
+    { nome: "Lesotho", continente: "Africa" },
+    { nome: "Lithuania", continente: "Europa" },
+    { nome: "Luxembourg", continente: "Europa" },
+    { nome: "Latvia", continente: "Europa" },
+    { nome: "Morocco", continente: "Africa" },
+    { nome: "Moldova", continente: "Europa" },
+    { nome: "Madagascar", continente: "Africa" },
+    { nome: "Mexico", continente: "Americhe" },
+    { nome: "Macedonia", continente: "Europa" },
+    { nome: "Mali", continente: "Africa" },
+    { nome: "Myanmar", continente: "Asia" },
+    { nome: "Montenegro", continente: "Europa" },
+    { nome: "Mongolia", continente: "Asia" },
+    { nome: "Mozambique", continente: "Africa" },
+    { nome: "Mauritania", continente: "Africa" },
+    { nome: "Malawi", continente: "Africa" },
+    { nome: "Malaysia", continente: "Asia" },
+    { nome: "Namibia", continente: "Africa" },
+    { nome: "Niger", continente: "Africa" },
+    { nome: "Nigeria", continente: "Africa" },
+    { nome: "Nicaragua", continente: "Americhe" },
+    { nome: "Norway", continente: "Europa" },
+    { nome: "Nepal", continente: "Asia" },
+    { nome: "Oman", continente: "Asia" },
+    { nome: "Pakistan", continente: "Asia" },
+    { nome: "Panama", continente: "Americhe" },
+    { nome: "Peru", continente: "Americhe" },
+    { nome: "Philippines", continente: "Asia" },
+    { nome: "Papua New Guinea", continente: "Oceania" },
+    { nome: "Poland", continente: "Europa" },
+    { nome: "North Korea", continente: "Asia" },
+    { nome: "Paraguay", continente: "Americhe" },
+    { nome: "Palestine", continente: "Asia" },
+    { nome: "Qatar", continente: "Asia" },
+    { nome: "Romania", continente: "Europa" },
+    { nome: "Rwanda", continente: "Africa" },
+    { nome: "Western Sahara", continente: "Africa" },
+    { nome: "Saudi Arabia", continente: "Asia" },
+    { nome: "Sudan", continente: "Africa" },
+    { nome: "South Sudan", continente: "Africa" },
+    { nome: "Senegal", continente: "Africa" },
+    { nome: "Sierra Leone", continente: "Africa" },
+    { nome: "El Salvador", continente: "Americhe" },
+    { nome: "Serbia", continente: "Europa" },
+    { nome: "Suriname", continente: "Americhe" },
+    { nome: "Slovakia", continente: "Europa" },
+    { nome: "Slovenia", continente: "Europa" },
+    { nome: "Sweden", continente: "Europa" },
+    { nome: "Swaziland", continente: "Africa" },
+    { nome: "Syria", continente: "Asia" },
+    { nome: "Chad", continente: "Africa" },
+    { nome: "Togo", continente: "Africa" },
+    { nome: "Thailand", continente: "Asia" },
+    { nome: "Tajikistan", continente: "Asia" },
+    { nome: "Turkmenistan", continente: "Asia" },
+    { nome: "Timor-Leste", continente: "Asia" },
+    { nome: "Tunisia", continente: "Africa" },
+    { nome: "Turkey", continente: "Asia" },
+    { nome: "Taiwan", continente: "Asia" },
+    { nome: "Tanzania", continente: "Africa" },
+    { nome: "Uganda", continente: "Africa" },
+    { nome: "Ukraine", continente: "Europa" },
+    { nome: "Uruguay", continente: "Americhe" },
+    { nome: "Uzbekistan", continente: "Asia" },
+    { nome: "Venezuela", continente: "Americhe" },
+    { nome: "Vietnam", continente: "Asia" },
+    { nome: "Yemen", continente: "Asia" },
+    { nome: "Zambia", continente: "Africa" },
+    { nome: "Zimbabwe", continente: "Africa" },
+    { nome: "Somalia", continente: "Africa" },
+    { nome: "Kosovo", continente: "Europa" },
+    { nome: "South Africa", continente: "Africa" },
+    { nome: "New Zealand", continente: "Oceania" },
+    { nome: "Chile", continente: "Americhe" },
+    { nome: "Netherlands", continente: "Europa" },
+    { nome: "Portugal", continente: "Europa" },
+    { nome: "Russian Federation", continente: "Europa" },
+    { nome: "Spain", continente: "Europa" },
+    { nome: "France", continente: "Europa" },
+    { nome: "United States", continente: "Americhe" },
+    { nome: "Anguilla", continente: "Americhe" },
+    { nome: "Antigua and Barbuda", continente: "Americhe" },
+    { nome: "Bahrain", continente: "Asia" },
+    { nome: "Bahamas", continente: "Americhe" },
+    { nome: "Barbados", continente: "Americhe" },
+    { nome: "Comoros", continente: "Africa" },
+    { nome: "Cape Verde", continente: "Africa" },
+    { nome: "Cyprus", continente: "Europa" },
+    { nome: "Dominica", continente: "Americhe" },
+    { nome: "Falkland Islands", continente: "Americhe" },
+    { nome: "Faeroe Islands", continente: "Europa" },
+    { nome: "Federated States of Micronesia", continente: "Oceania" },
+    { nome: "Grenada", continente: "Americhe" },
+    { nome: "Saint Kitts and Nevis", continente: "Americhe" },
+    { nome: "Saint Lucia", continente: "Americhe" },
+    { nome: "Maldives", continente: "Asia" },
+    { nome: "Marshall Islands", continente: "Oceania" },
+    { nome: "Malta", continente: "Europa" },
+    { nome: "Montserrat", continente: "Americhe" },
+    { nome: "Mauritius", continente: "Africa" },
+    { nome: "New Caledonia", continente: "Oceania" },
+    { nome: "Nauru", continente: "Oceania" },
+    { nome: "Palau", continente: "Oceania" },
+    { nome: "French Polynesia", continente: "Oceania" },
+    { nome: "Solomon Islands", continente: "Oceania" },
+    { nome: "Sao Tome and Principe", continente: "Africa" },
+    { nome: "Seychelles", continente: "Africa" },
+    { nome: "Tonga", continente: "Oceania" },
+    { nome: "Trinidad and Tobago", continente: "Americhe" },
+    { nome: "Tuvalu", continente: "Oceania" },
+    { nome: "Saint Vincent and the Grenadines", continente: "Americhe" },
+    { nome: "Vanuatu", continente: "Oceania" },
+    { nome: "Samoa", continente: "Oceania" },
+    { nome: "Fiji", continente: "Oceania" }
+  ];
+
+
+
+
+
+
+
+
+
+
+  function cambiaDifficolta(valore) {
+    if (valore === "semplificato") {
+      difficolta = 1;
+    } else {
+      difficolta = 0;
+    }
+  }
+
+  function cambiaNumeroGiocatori(valore) {
+    if (valore === "2") {
+      campogiocatore1.hidden = false;
+      campogiocatore2.hidden = false;
+      campogiocatore3.hidden = true;
+      campogiocatore4.hidden = true;
+      campogiocatore5.hidden = true;
+      campogiocatore6.hidden = true;
+      numerogiocatori=2
+    } else if (valore === "3"){
+      campogiocatore1.hidden = false;
+      campogiocatore2.hidden = false;
+      campogiocatore3.hidden = false;
+      campogiocatore4.hidden = true;
+      campogiocatore5.hidden = true;
+      campogiocatore6.hidden = true;
+      numerogiocatori = 3;
+    }
+    else if (valore === "4") {
+      campogiocatore1.hidden = false;
+      campogiocatore2.hidden = false;
+      campogiocatore3.hidden = false;
+      campogiocatore4.hidden = false;
+      campogiocatore5.hidden = true;
+      campogiocatore6.hidden = true;
+      numerogiocatori = 4;
+    }
+    else if (valore === "5") {
+      campogiocatore1.hidden = false;
+      campogiocatore2.hidden = false;
+      campogiocatore3.hidden = false;
+      campogiocatore4.hidden = false;
+      campogiocatore5.hidden = false;
+      campogiocatore6.hidden = true;
+      numerogiocatori = 5;
+    }
+    else if (valore === "6") {
+      campogiocatore1.hidden = false;
+      campogiocatore2.hidden = false;
+      campogiocatore3.hidden = false;
+      campogiocatore4.hidden = false;
+      campogiocatore5.hidden = false;
+      campogiocatore6.hidden = false;
+      numerogiocatori = 6;
+    }
+  }
+  const btnRecap = document.getElementById("btnRecap");
+  const recapObiettivo = document.getElementById("recapObiettivo");
+  const infoObiettivo = document.getElementById("infoObiettivo");
+
+
+
+
+
+
+
+
+
+
+  const btnAvanti = document.getElementById("bottoneAvanti");
+  btnAvanti.addEventListener("click", function () {
+    let controllo = 1;
+    giocatori = [];
+    if (campogiocatore1.hidden === false) {
+      if (!Giocatore1.value) {
+        controllo = 0;
+
+      } else {
+        giocatori.push(Giocatore1.value);
+      }
+    }
+    if (campogiocatore2.hidden === false) {
+      if (!Giocatore2.value) {
+        controllo = 0;
+        
+      } else {
+        giocatori.push(Giocatore2.value);
+      }
+    }
+    if (campogiocatore3.hidden === false) {
+      if (!Giocatore3.value) {
+        controllo = 0;
+       
+      }
+      else {
+        giocatori.push(Giocatore3.value);
+      }
+    }
+    if (campogiocatore4.hidden === false) {
+      if (!Giocatore4.value) {
+        controllo = 0;
+       
+      } else {
+        giocatori.push(Giocatore4.value);
+      }
+    }
+    if (campogiocatore5.hidden === false) {
+      if (!Giocatore5.value) {
+        controllo = 0;
+        
+      } else {
+        giocatori.push(Giocatore5.value);
+      }
+    }
+    if (campogiocatore6.hidden === false) {
+      if (!Giocatore6.value) {
+        controllo = 0;
+
+        
+      } else {
+        giocatori.push(Giocatore6.value);
+      }
+    }
+    if (controllo === 1) {
+      
+      imp.hidden = true;
+      mappa.hidden = false;
+      for (let i = 0; i < numerogiocatori; i++) {
+        const randomIndex = Math.floor(Math.random() * obiettivitotale.length);
+        obiettivigiocatori.push(obiettivitotale[randomIndex]);
+      }
+      colorigiocatori = coloritotale.slice(0, numerogiocatori);
+      
+      titologiocatore.textContent = "Turno di " + giocatori[0];
+      titologiocatore.style.color = colorigiocatori[0];
+    } else {
+      alert("Inserire nomi giocatori");
+    }
+  });
+  let testodomanda = ""
+  let  flagdomanda = 0;
+  bottoneDomanda.addEventListener("click", function () {
+    if (flagdomanda === 0) {
+      giocatoreingioco = numeroturno % numerogiocatori
+      if (giocatoreingioco === 0) {
+        giocatoreingioco = numerogiocatori;
+      }
+      const randomIndex = Math.floor(Math.random() * domande.length);
+      
+      testodomanda = giocatori[giocatoreingioco - 1] + " seleziona uno Stato con la seguente caratteristica : " + domande[randomIndex];
+      
+      domandaestratta = domande[randomIndex];
+      alert(testodomanda);
+      flagdomanda = 1;
+    }
+    else {
+      alert(testodomanda)
+    }
+  });
   // Array per salvare i nomi unici
   const countryNames = new Set();
 
@@ -1241,18 +4368,456 @@
 
   // Se vuoi fare anche l'interazione al click
   paths.forEach(path => {
+    
     path.addEventListener('click', () => {
+      let Aggiornamentopunteggioflag = 0;
+      giocatoreingioco = numeroturno % numerogiocatori;
+      if (giocatoreingioco === 0) {
+        giocatoreingioco = numerogiocatori;
+      }
+
       const countryName = path.getAttribute('class') || path.dataset.name;
-      if (!countryName) return;
+      const esitodomanda = controlloRisposta(countryName);
 
-      alert(countryName);
+      if (esitodomanda <= 1) {
 
-      paths.forEach(p => {
-        const nameOrClass = p.getAttribute('class') || p.dataset.name;
-        if (nameOrClass === countryName) {
-          p.style.fill = 'red';
+        if (esitodomanda === 1) {
+
+          let infonazione = risposte.find(stato => stato.nome === countryName);
+          let continentenazione = continenti.find(stato => stato.nome === countryName);
+
+          const coloreattuale = colorigiocatori[giocatoreingioco - 1];
+
+          paths.forEach(p => {
+            const nameOrClass = p.getAttribute('class') || p.dataset.name;
+
+            if (nameOrClass === countryName) {
+
+              const coloreprecedente = p.style.fill;
+              let coloreprecedentebis = p.style.fill;
+              if (coloreprecedente) { // solo se c'è un colore
+                 coloreprecedentebis = rgbToHex(coloreprecedente);
+               
+              } else {
+                 coloreprecedentebis = p.style.fill
+              }
+             
+           
+              // 🔵 CASO 1: è già tuo → togli
+              if (coloreprecedente === coloreattuale || coloreprecedentebis === coloreattuale) {
+             
+                p.style.fill = "";
+                if (Aggiornamentopunteggioflag === 0) {
+                  AggiornamentoPunteggio(giocatoreingioco - 1, 1, infonazione, continentenazione);
+                  Aggiornamentopunteggioflag =1
+                }
+                return; // 👈 IMPORTANTISSIMO
+              }
+
+              // 🟢 CASO 2: territorio libero
+              if (coloreprecedente === "") {
+                p.style.fill = coloreattuale;
+                if (Aggiornamentopunteggioflag === 0) {
+                  AggiornamentoPunteggio(giocatoreingioco - 1, 0, infonazione, continentenazione);
+                  Aggiornamentopunteggioflag = 1
+                }
+              }
+
+              // 🔴 CASO 3: territorio di un altro
+              else {
+                console.log(Aggiornamentopunteggioflag)
+                const vecchioGiocatore = colorigiocatori.indexOf(rgbToHex(coloreprecedente));
+                console.log(vecchioGiocatore)
+                if (Aggiornamentopunteggioflag === 0) {
+                  if (vecchioGiocatore !== -1) {
+                    
+                    AggiornamentoPunteggio(vecchioGiocatore, 1, infonazione, continentenazione);
+                  }
+
+                 
+                  
+                  AggiornamentoPunteggio(giocatoreingioco - 1, 0, infonazione, continentenazione);
+                }
+                Aggiornamentopunteggioflag = 1;
+                p.style.fill = coloreattuale;
+              }
+           
+            }
+          });
+
+          alert("Giusto!");
+
+        } else {
+          alert("Sbagliato");
         }
-      });
+
+        if (giocatoreingioco === numerogiocatori) {
+          titologiocatore.textContent = "Turno di " + giocatori[0];
+          titologiocatore.style.color = colorigiocatori[0];
+        } else {
+          titologiocatore.textContent = "Turno di " + giocatori[giocatoreingioco];
+          titologiocatore.style.color = colorigiocatori[giocatoreingioco];
+        }
+
+        numeroturno = numeroturno + 1;
+        flagdomanda = 0;
+      }
     });
   });
+  function controlloRisposta(nomestato) {
+    let esito = 0;
+    let infostato = risposte.find(stato => stato.nome === nomestato);
+    let continentestato = continenti.find(stato => stato.nome === nomestato);
+    if (flagdomanda === 1) {
+      if (domandaestratta === domande[0]) {
+        if (infostato.popolazione >= 60000000) {
+          esito = 1;
+        } else {
+          esito=0
+        }
+      } 
+      if (domandaestratta === domande[1]) {
+        if (infostato.popolazione <= 25000000) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[2]) {
+        if (infostato.superficie >= 900000) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[3]) {
+        if (infostato.superficie <= 600000) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[4]) {
+        if (infostato.colonizzato=== 0) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[5]) {
+        if (infostato.colonizzato === 1) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[6]) {
+        if (infostato.formaDiGoverno ==="Repubblica") {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[7]) {
+        if (infostato.formaDiGoverno === "Monarchia") {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[8]) {
+        if (infostato.formaDiGoverno === "Dittatura") {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[9]) {
+        if (infostato.lingua === "Inglese" || infostato.lingua === "Spagnolo" || infostato.lingua === "Francese" || infostato.lingua === "Arabo") {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[10]) {
+        if (infostato.lingua != "Inglese" && infostato.lingua != "Spagnolo" && infostato.lingua != "Francese" && infostato.lingua != "Arabo") {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[11]) {
+        const primalettera = infostato.capitale.charAt(0);
+        if (primalettera === "B" || primalettera === "N" || primalettera === "G" || primalettera === "T" || primalettera === "P" || primalettera === "L" ) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[12]) {
+        const primalettera = infostato.capitale.charAt(0);
+        if (primalettera === "R" || primalettera === "M" || primalettera === "V" || primalettera === "C" || primalettera === "S" || primalettera === "F") {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[13]) {
+        if (infostato.numColoriBandiera >= 3) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[14]) {
+        if (infostato.numColoriBandiera<=2) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[15]) {
+        if (infostato.indipendenza >= 1900) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[16]) {
+        if (infostato.indipendenza <= 1900) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      }
+      if (domandaestratta === domande[17]) {
+        if (infostato.altezzaMonte >= 2500) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[18]) {
+        if (infostato.altezzaMonte <= 2000) {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+      if (domandaestratta === domande[19]) {
+        const ultimalettera = infostato.capitale.charAt(infostato.capitale.length-1);
+        if (ultimalettera != "a" && ultimalettera != "e" && ultimalettera != "i" && ultimalettera != "o" && ultimalettera != "u" && ultimalettera != "y") {
+          esito = 1;
+        } else {
+          esito = 0
+        }
+      } 
+    }
+
+    else {
+      alert("Genera prima una domanda per questo turno");
+      esito = 2;
+    }
+    
+
+    return esito;
+  }
+ function  AggiornamentoPunteggio(Gioc, indovinatoprecedentemente,info,continente){
+    if (indovinatoprecedentemente === 0) {
+     
+      if (continente.continente == "Africa") {
+        territoriAfrica[Gioc]=territoriAfrica[Gioc]+1
+      }
+      if (continente.continente == "Oceania") {
+        territoriOceania[Gioc] = territoriOceania[Gioc] + 1
+      }
+      if (continente.continente == "Americhe") {
+        territoriAmeriche[Gioc] = territoriAmeriche[Gioc] + 1
+      }
+      if (continente.continente == "Asia") {
+        territoriAsia[Gioc] = territoriAsia[Gioc] + 1
+      }
+      if (continente.continente == "Europa") {
+        territoriEuropa[Gioc] = territoriEuropa[Gioc] + 1
+      }
+      mediapopolazioneterritori[Gioc] = (mediapopolazioneterritori[Gioc] * territoritotali[Gioc] + info.popolazione) / (territoritotali[Gioc] + 1);
+      mediaestensioneterritori[Gioc] = (mediaestensioneterritori[Gioc] * territoritotali[Gioc] + info.superficie) / (territoritotali[Gioc] + 1);
+      mediaPilProcapite[Gioc] = (mediaPilProcapite[Gioc] * territoritotali[Gioc] + info.pilProCapite) / (territoritotali[Gioc] + 1);
+      if (info.colonizzato === 0) {
+        territorimaicolonizzati[Gioc] = territorimaicolonizzati[Gioc] + 1
+      } else {
+        territoricolonizzati[Gioc] = territoricolonizzati[Gioc] + 1
+      }
+      territoritotali[Gioc] = territoritotali[Gioc] + 1;
+      capitali[Gioc].push(info.capitale)
+      ControllaVittoria(Gioc);
+    } else {
+      if (continente.continente == "Africa") {
+        territoriAfrica[Gioc] = territoriAfrica[Gioc] - 1
+      }
+      if (continente.continente == "Oceania") {
+        territoriOceania[Gioc] = territoriOceania[Gioc] - 1
+      }
+      if (continente.continente == "Americhe") {
+        territoriAmeriche[Gioc] = territoriAmeriche[Gioc] - 1
+      }
+      if (continente.continente == "Asia") {
+        territoriAsia[Gioc] = territoriAsia[Gioc] - 1
+      }
+      if (continente.continente == "Europa") {
+        territoriEuropa[Gioc] = territoriEuropa[Gioc] - 1
+      }
+      mediapopolazioneterritori[Gioc] = (mediapopolazioneterritori[Gioc] * territoritotali[Gioc] - info.popolazione) / (territoritotali[Gioc] - 1);
+      mediaestensioneterritori[Gioc] = (mediaestensioneterritori[Gioc] * territoritotali[Gioc] - info.superficie) / (territoritotali[Gioc] - 1);
+      mediaPilProcapite[Gioc] = (mediaPilProcapite[Gioc] * territoritotali[Gioc] - info.pilProCapite) / (territoritotali[Gioc] - 1);
+      if (info.colonizzato === 0) {
+        territorimaicolonizzati[Gioc] = territorimaicolonizzati[Gioc] - 1
+      } else {
+        territoricolonizzati[Gioc] = territoricolonizzati[Gioc] - 1
+      }
+      territoritotali[Gioc] = territoritotali[Gioc] - 1;
+      const index = capitali[Gioc].indexOf(info.capitale);
+
+      if (index !== -1) {
+        capitali[Gioc].splice(index, 1);
+      }
+
+      ControllaVittoria(Gioc);
+    }
+  }
+  function ControllaVittoria(Gioc){
+    let vittoria = 0
+    const obiettivo = obiettivigiocatori[Gioc]
+    if (obiettivo === obiettivitotale[0]) {
+      if (territoritotali[Gioc] >= 10) {
+        vittoria=1
+      }
+    }
+    if (obiettivo === obiettivitotale[1]) {
+      let continentibuoni=0
+      if (territoriAsia[Gioc] >= 2) {
+        continentibuoni=continentibuoni+1
+      }
+      if (territoriAfrica[Gioc] >= 2) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (territoriAmeriche[Gioc] >= 2) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (territoriEuropa[Gioc] >= 2) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (territoriOceania[Gioc] >= 2) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (continentibuoni >= 4) {
+        vittoria=1
+      }
+    }
+    if (obiettivo === obiettivitotale[2]) {
+      if (mediapopolazioneterritori[Gioc] >= 50000000 && territoritotali[Gioc]>=7) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[3]) {
+      if (mediapopolazioneterritori[Gioc] <= 30000000 && territoritotali[Gioc] >= 7) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[4]) {
+      let continentibuoni = 0
+      if (territoriAsia[Gioc] >= 1) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (territoriAfrica[Gioc] >= 1) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (territoriAmeriche[Gioc] >= 1) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (territoriEuropa[Gioc] >= 1) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (territoriOceania[Gioc] >= 1) {
+        continentibuoni = continentibuoni + 1
+      }
+      if (continentibuoni <= 2 && territoritotali[Gioc]>=7) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[5]) {
+      if (mediaestensioneterritori[Gioc] >= 800000 && territoritotali[Gioc] >= 7) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[6]) {
+      if (mediaestensioneterritori[Gioc] <= 7000000 && territoritotali[Gioc] >= 7) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[7]) {
+      if (mediaPilProcapite[Gioc] >= 15000 && territoritotali[Gioc] >= 7) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[8]) {
+      if (mediaPilProcapite[Gioc] <= 10000 && territoritotali[Gioc] >= 7) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[9]) {
+      if (territorimaicolonizzati[Gioc] >= 5 && territoritotali[Gioc] >= 7 ) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[10]) {
+      if (territoricolonizzati[Gioc] >= 5 && territoritotali[Gioc] >= 7 ) {
+        vittoria = 1
+      }
+    }
+    if (obiettivo === obiettivitotale[11]) {
+      let conteggio = {};
+      capitali[Gioc].forEach(capitale => {
+        const iniziale = capitale.charAt(0);
+
+        if (conteggio[iniziale]) {
+          conteggio[iniziale]++;
+        } else {
+          conteggio[iniziale] = 1;
+        }
+      });
+
+      let max = 0;
+
+      for (let lettera in conteggio) {
+        if (conteggio[lettera] > max) {
+          max = conteggio[lettera];
+        }
+      }
+      if (max >= 3 && territoritotali[Gioc] >= 7) {
+        vittoria = 1;
+      }
+    }
+    if (vittoria === 1) {
+      alert(" Bravo " + giocatori[Gioc] + " ! Hai vinto ! ")
+    }
+  }
+  let giocatoreingiocorecap = 1;
+  btnRecap.addEventListener("click", function () {
+    giocatoreingiocorecap = numeroturno % numerogiocatori
+    if (giocatoreingiocorecap === 0) {
+      giocatoreingiocorecap = numerogiocatori;
+    }
+    const testoobiettivo = "Obiettivo: " + obiettivigiocatori[giocatoreingiocorecap - 1] + "\nTerritori totali : " + territoritotali[giocatoreingiocorecap - 1] + "\nTerritori Africa : " + territoriAfrica[giocatoreingiocorecap - 1] +"\nTerritori Asia : " + territoriAsia[giocatoreingiocorecap - 1]
+      + "\nTerritori Americhe : " + territoriAmeriche[giocatoreingiocorecap - 1] + "\nTerritori Oceania : " + territoriOceania[giocatoreingiocorecap - 1] + "\nTerritori Europa : " + territoriEuropa[giocatoreingiocorecap - 1]  +"\nMedia popolazione territori: " + mediapopolazioneterritori[giocatoreingiocorecap - 1]
+      + "\nMedia estensione territori : " + mediaestensioneterritori[giocatoreingiocorecap - 1] + "\nMedia PIL Pro capite territori : " + mediaPilProcapite[giocatoreingiocorecap - 1] + "\nTerritori tche non sono mai stati colonizzati : " + territorimaicolonizzati[giocatoreingiocorecap - 1]
+      + "\nTerritori colonizzati almeno una volta : " + territoricolonizzati[giocatoreingiocorecap - 1] + "\nCapitali: " + capitali[giocatoreingiocorecap - 1];
+      alert(testoobiettivo)
+
+  });
+  function rgbToHex(rgb) {
+  const result = rgb.match(/\d+/g);
+  return "#" + result.map(x => (+x).toString(16).padStart(2, '0')).join('').toUpperCase();
+}
+
 </script>
