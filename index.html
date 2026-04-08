@@ -267,24 +267,8 @@
         ">
         Recap Obiettivo
       </button>
-      <button id="bottoneDomanda"
-              style="
-          position: fixed;
-          bottom: 20px;       /* distanza dal fondo */
-          left: 50%;          /* centro orizzontale */
-          transform: translateX(-50%);
-          padding: 10px 20px;
-          font-size: 14px;
-          background-color: #4da6ff;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          z-index: 1000;
-        ">
-        Genera domanda
-      </button>
-     
+  
+
       <!-- Pannello popup nascosto -->
       <div id="recapObiettivo"
            style="
@@ -1254,7 +1238,20 @@
       <circle cx="1798.2" cy="719.3" id="2">
       </circle>
     </svg>
-   
+    <!-- Pulsante posizionato subito sotto l'SVG -->
+    <button id="bottoneDomanda"
+            style="
+              margin-top: 10px;       /* distanza sotto l'SVG */
+              padding: 10px 20px;
+              font-size: 14px;
+              background-color: #4da6ff;
+              color: white;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+          ">
+      Genera domanda
+    </button>
   </div>
   <div id="overlay"></div>
   <div class="container" id="imp">
