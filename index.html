@@ -1,217 +1,223 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Mappa completa</title>
-    <style>
-        svg path {
-          
-            stroke: #333;
-            stroke-width: 0.5;
-            cursor: pointer;
-            transition: fill 0.2s;
-        }
+  <meta charset="UTF-8" />
+  <title>Mappa completa</title>
+  <style>
+    svg path {
+      stroke: #333;
+      stroke-width: 0.5;
+      cursor: pointer;
+      transition: fill 0.2s;
+    }
 
 
-            svg path:hover {
-                fill: #4da6ff;
-            }
-      svg {
-        max-width: 100%;
-        height: auto;
-        display: block;
-      }
-      html, body {
-        height: 100%;
+      svg path:hover {
+        fill: #4da6ff;
       }
 
-      body {
-        margin: 0;
-        display: flex;
-        justify-content: center; /* centro orizzontale */
-        align-items: center; /* centro verticale */
-        background: #f5f5f5;
-      }
-      .map-container {
-        width: 100%;
-        max-width: 100%;
-      }
-      body {
-        margin: 0;
-        overflow-x: hidden;
-      }
-        #popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border: 2px solid #444;
-            padding: 20px 30px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            display: none;
-            z-index: 1000;
-            min-width: 250px;
-            border-radius: 8px;
-        }
+    svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
 
-        #popup-close {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 18px;
-            user-select: none;
-        }
-        /* Overlay scuro dietro al pannello */
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.4);
-            display: none;
-            z-index: 900;
-        }
-      .schermata {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100vw;
-        flex-direction: column;
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center; /* centro orizzontale */
+      align-items: center; /* centro verticale */
+      background: #f5f5f5;
+    }
+
+    .map-container {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    body {
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 2px solid #444;
+      padding: 20px 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+      min-width: 250px;
+      border-radius: 8px;
+    }
+
+    #popup-close {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+      user-select: none;
+    }
+    /* Overlay scuro dietro al pannello */
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 900;
+    }
+
+    .schermata {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100vw;
+      flex-direction: column;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 350px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* --- FORM --- */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.2s;
+    }
+
+      button:hover {
+        background-color: #45a049;
       }
 
-      .container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        width: 90%;
-        max-width: 350px;
-        box-sizing: border-box;
-      }
+    /* --- SCHERMATA GRIGLIA --- */
+    #grigliaSchermata {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      height: 100vh;
+      gap: 10px;
+      padding-top: 20px;
+      box-sizing: border-box;
+    }
 
-      h1 {
-        text-align: center;
-        margin-bottom: 20px;
-      }
+    /* --- GRIGLIA --- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr); /* colonne uguali */
+      grid-template-rows: repeat(5, 1fr); /* righe uguali */
+      gap: 5px;
+      width: 90vw;
+      max-width: 500px;
+      aspect-ratio: 1 / 1; /* griglia quadrata */
+    }
 
-      /* --- FORM --- */
-      .form-group {
-        margin-bottom: 15px;
-      }
+    /* --- TILE --- */
+    .tile {
+      width: 100%;
+      aspect-ratio: 1 / 1; /* altezza uguale alla larghezza */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      cursor: pointer;
+      user-select: none;
+      font-weight: bold;
+      font-size: clamp(12px, 2vw, 16px); /* testo scalabile */
+      box-sizing: border-box;
+      position: relative;
+    }
 
-      label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-      }
-
-      input, select {
-        width: 100%;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        font-size: 16px;
-        box-sizing: border-box;
-      }
-
-      button {
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4CAF50;
+      /* --- TILE ATTIVO --- */
+      .tile.active {
         color: white;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.2s;
       }
 
-        button:hover {
-          background-color: #45a049;
-        }
+    /* --- MARK X --- */
+    .xmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      color: black;
+    }
 
-      /* --- SCHERMATA GRIGLIA --- */
-      #grigliaSchermata {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        width: 100%;
-        height: 100vh;
-        gap: 10px;
-        padding-top: 20px;
-        box-sizing: border-box;
-      }
-
-      /* --- GRIGLIA --- */
+    /* --- MEDIA QUERY PER MOBILE MOLTO PICCOLO --- */
+    @media (max-width: 400px) {
       .grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr); /* colonne uguali */
-        grid-template-rows: repeat(5, 1fr); /* righe uguali */
-        gap: 5px;
-        width: 90vw;
-        max-width: 500px;
-        aspect-ratio: 1 / 1; /* griglia quadrata */
+        gap: 3px;
       }
 
-      /* --- TILE --- */
       .tile {
-        width: 100%;
-        aspect-ratio: 1 / 1; /* altezza uguale alla larghezza */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        border-radius: 8px;
-        border: 2px solid #ccc;
-        cursor: pointer;
-        user-select: none;
-        font-weight: bold;
-        font-size: clamp(12px, 2vw, 16px); /* testo scalabile */
-        box-sizing: border-box;
-        position: relative;
+        font-size: 10px;
       }
 
-        /* --- TILE ATTIVO --- */
-        .tile.active {
-          color: white;
-        }
-
-      /* --- MARK X --- */
-      .xmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 60px;
-        color: black;
+      button, input, select {
+        font-size: 14px;
       }
-
-      /* --- MEDIA QUERY PER MOBILE MOLTO PICCOLO --- */
-      @media (max-width: 400px) {
-        .grid {
-          gap: 3px;
-        }
-
-        .tile {
-          font-size: 10px;
-        }
-
-        button, input, select {
-          font-size: 14px;
-        }
-      }
-    </style>
+    }
+  </style>
 </head>
 <body>
 
@@ -257,7 +263,7 @@
           top: 10px;
           right: 10px;
           padding: 5px 10px;
-          font-size: 12px;
+          font-size: 24px;
           width: auto;
           background-color: #4da6ff;
           color: white;
@@ -267,7 +273,18 @@
         ">
         Recap Obiettivo
       </button>
-  
+      <div id="testoFurti"
+           style="
+       position: absolute;
+       top: 10px;
+       left: 10px;
+       font-size: 24px;
+      
+     ">
+        Testo informativo
+      </div>
+
+
 
       <!-- Pannello popup nascosto -->
       <div id="recapObiettivo"
@@ -1313,7 +1330,13 @@
                title="Inserisci solo lettere dell'alfabeto, lettere accentate e spazi"
                oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]/g,'').toUpperCase()" />
       </div>
-
+      <div class="form-group" id="campoNumeroFurti" >
+        <label for="NumeroFurti">Numero Furti Massimo per giocatore (lasciare vuoto se illimitato)</label>
+        <input type="text" id="NumeroFurti" name="NumeroFurti"
+               pattern="\d*"
+               title="Inserisci solo numeri interi"
+               oninput="this.value = this.value.replace(/[^0-9]/g,'')" />
+        </div>
 
       <div class="form-group" id="contenitoredifficolta">
         <label id="lbldifficolta" for="difficolta">Selezionare Difficoltà</label>
@@ -1359,7 +1382,7 @@
   </form>
   </div>
 </body>
-</html >
+</html>
 <script>
   const bottoneDomanda = document.getElementById("bottoneDomanda")
   const campogiocatore1 = document.getElementById("campogiocatore1")
@@ -1375,25 +1398,28 @@
   const Giocatore4 = document.getElementById("Giocatore4")
   const Giocatore5 = document.getElementById("Giocatore5")
   const Giocatore6 = document.getElementById("Giocatore6")
+  const NumeroFurti = document.getElementById("NumeroFurti")
+  const testoFurti = document.getElementById("testoFurti")
   const imp = document.getElementById("imp");
   const mappa = document.getElementById("mappa");
-  const titologiocatore= document.getElementById("GiocatoreAttivo")
+  const titologiocatore = document.getElementById("GiocatoreAttivo")
   let numeroturno = 1;
   let difficolta = 0;
   let numerogiocatori = 2;
   const paths = document.querySelectorAll('path');
-  let giocatori=[];
+  let giocatori = [];
   const coloritotale = ["#FF0000", "#0000FF", "#00FF00", "#FFFF00", "#000000", "#800080"];
   let colorigiocatori = [];
   let giocatoreingioco = 1;
   let domandaestratta = "";
-
-  const obiettivitotale = ["Conquista 10 territori", "Conquista 2 territori in 4 continenti", "Conquista almeno 7 territori con media di popolazione maggiore di 50000000",
-    "Conquista almeno 7 territori con media di popolazione minore di 30000000", "Conquista almeno 7 terrirori ma solamente in al massimo 2 continenti",
-    "Conquista almeno 7 stati con estensione media maggiore di 800000 Km^2", "Conquista almeno 7 stati con estensione media minore di 700000 Km^2",
+  let furtitotali = 9999;
+  const obiettivitotale = ["Conquista 10 territori", "Conquista 2 territori in 4 continenti", "Conquista almeno 7 territori con media di popolazione maggiore di 50 milioni",
+    "Conquista almeno 7 territori con media di popolazione minore di 30 milioni", "Conquista almeno 7 terrirori ma solamente in al massimo 2 continenti",
+    "Conquista almeno 7 stati con estensione media maggiore di 800 mila Km^2", "Conquista almeno 7 stati con estensione media minore di 700 mila Km^2",
     "Conquista almeno 7 Stati con PIL pro capite medio maggiore di 15000 dollari", "Conquista almeno 7 Stati con PIL pro capite medio minore di 10000 dollari", "Conquista almeno 7 Stati di cui almeno 5 mai colonizzati",
     "Conquista almeno 7 stati di cui almeno 5 che sono stati colonizzati", "Conquista almeno 7 Stati di cui almeno 3 con la capitale che inizia con la stessa lettera"
   ]
+  let Furti = [9999, 9999, 9999, 9999,9999,9999];
   let obiettivigiocatori = [];
   let territoritotali = [0, 0, 0, 0, 0, 0];
   let territoriAfrica = [0, 0, 0, 0, 0, 0];
@@ -1407,7 +1433,7 @@
   let territorimaicolonizzati = [0, 0, 0, 0, 0, 0];
   let territoricolonizzati = [0, 0, 0, 0, 0, 0];
   let capitali = [[], [], [], [], [], []];
-  const domande = ["Almeno 60 milioni  di abitanti", "Al massimo 25 milioni di abitanti", "Estensione di almeno 900000 Km^2 ", "Estensione di al massimo 600000", "Mai colonizzato", "Colonizzato almeno una volta",
+  const domande = ["Almeno 60 milioni  di abitanti", "Al massimo 25 milioni di abitanti", "Estensione di almeno 900 mila Km^2 ", "Estensione di al massimo 600 mila", "Mai colonizzato", "Colonizzato almeno una volta",
     "Repubblica", "Monarchia", "Dittatura", "Lingua principale tra inglese francese  spagnolo o arabo", "Lingua principale non inglese non francese non spagnolo e non arabo", "Capitale che inizia con una di queste consonanti: B N L P T G",
     "Capitale che inizia con una di queste consonanti: R M V C S F", "Bandiera con almeno 3 colori ufficiali", "Bandiera con al massimo 2 colori ufficiali", "Indipendenza dopo il 1900 o mai avvenuta", "Indipendenza prima del 1900", "Montagna più alta di almeno 2500 metri",
     "Montagna più alta minore di 2000 metri", "Capitale che nella traduzione italiana finisce con una consonante"
@@ -4209,8 +4235,8 @@
       campogiocatore4.hidden = true;
       campogiocatore5.hidden = true;
       campogiocatore6.hidden = true;
-      numerogiocatori=2
-    } else if (valore === "3"){
+      numerogiocatori = 2
+    } else if (valore === "3") {
       campogiocatore1.hidden = false;
       campogiocatore2.hidden = false;
       campogiocatore3.hidden = false;
@@ -4275,7 +4301,7 @@
     if (campogiocatore2.hidden === false) {
       if (!Giocatore2.value) {
         controllo = 0;
-        
+
       } else {
         giocatori.push(Giocatore2.value);
       }
@@ -4283,7 +4309,7 @@
     if (campogiocatore3.hidden === false) {
       if (!Giocatore3.value) {
         controllo = 0;
-       
+
       }
       else {
         giocatori.push(Giocatore3.value);
@@ -4292,7 +4318,7 @@
     if (campogiocatore4.hidden === false) {
       if (!Giocatore4.value) {
         controllo = 0;
-       
+
       } else {
         giocatori.push(Giocatore4.value);
       }
@@ -4300,7 +4326,7 @@
     if (campogiocatore5.hidden === false) {
       if (!Giocatore5.value) {
         controllo = 0;
-        
+
       } else {
         giocatori.push(Giocatore5.value);
       }
@@ -4309,21 +4335,32 @@
       if (!Giocatore6.value) {
         controllo = 0;
 
-        
+
       } else {
         giocatori.push(Giocatore6.value);
       }
     }
     if (controllo === 1) {
-      
+
       imp.hidden = true;
       mappa.hidden = false;
       for (let i = 0; i < numerogiocatori; i++) {
         const randomIndex = Math.floor(Math.random() * obiettivitotale.length);
         obiettivigiocatori.push(obiettivitotale[randomIndex]);
       }
+
+      if (NumeroFurti.value) {
+        Furti = new Array(6).fill(NumeroFurti.value)
+        furtitotali=NumeroFurti.value
+        testoFurti.textContent = "Furti rimanenti: " + NumeroFurti.value + "/" + NumeroFurti.value
+        testoFurti.style.color = colorigiocatori[0];
+      } else {
+        testoFurti.hidden = true;
+      }
+
+
       colorigiocatori = coloritotale.slice(0, numerogiocatori);
-      
+
       titologiocatore.textContent = "Turno di " + giocatori[0];
       titologiocatore.style.color = colorigiocatori[0];
     } else {
@@ -4331,7 +4368,7 @@
     }
   });
   let testodomanda = ""
-  let  flagdomanda = 0;
+  let flagdomanda = 0;
   bottoneDomanda.addEventListener("click", function () {
     if (flagdomanda === 0) {
       giocatoreingioco = numeroturno % numerogiocatori
@@ -4339,9 +4376,9 @@
         giocatoreingioco = numerogiocatori;
       }
       const randomIndex = Math.floor(Math.random() * domande.length);
-      
+
       testodomanda = giocatori[giocatoreingioco - 1] + " seleziona uno Stato con la seguente caratteristica : " + domande[randomIndex];
-      
+
       domandaestratta = domande[randomIndex];
       alert(testodomanda);
       flagdomanda = 1;
@@ -4366,9 +4403,11 @@
 
   // Se vuoi fare anche l'interazione al click
   paths.forEach(path => {
-    
+
     path.addEventListener('click', () => {
       let Aggiornamentopunteggioflag = 0;
+      let furtoavvenuto = 0;
+      let flagcontrollo = 0;
       giocatoreingioco = numeroturno % numerogiocatori;
       if (giocatoreingioco === 0) {
         giocatoreingioco = numerogiocatori;
@@ -4387,6 +4426,9 @@
           const coloreattuale = colorigiocatori[giocatoreingioco - 1];
 
           paths.forEach(p => {
+            if (flagcontrollo === 1) {
+              return;
+            }
             const nameOrClass = p.getAttribute('class') || p.dataset.name;
 
             if (nameOrClass === countryName) {
@@ -4394,20 +4436,20 @@
               const coloreprecedente = p.style.fill;
               let coloreprecedentebis = p.style.fill;
               if (coloreprecedente) { // solo se c'è un colore
-                 coloreprecedentebis = rgbToHex(coloreprecedente);
-               
+                coloreprecedentebis = rgbToHex(coloreprecedente);
+
               } else {
-                 coloreprecedentebis = p.style.fill
+                coloreprecedentebis = p.style.fill
               }
-             
-           
+
+
               // 🔵 CASO 1: è già tuo → togli
               if (coloreprecedente === coloreattuale || coloreprecedentebis === coloreattuale) {
-             
+
                 p.style.fill = "";
                 if (Aggiornamentopunteggioflag === 0) {
                   AggiornamentoPunteggio(giocatoreingioco - 1, 1, infonazione, continentenazione);
-                  Aggiornamentopunteggioflag =1
+                  Aggiornamentopunteggioflag = 1
                 }
                 return; // 👈 IMPORTANTISSIMO
               }
@@ -4423,38 +4465,58 @@
 
               // 🔴 CASO 3: territorio di un altro
               else {
+                
                 console.log(Aggiornamentopunteggioflag)
                 const vecchioGiocatore = colorigiocatori.indexOf(rgbToHex(coloreprecedente));
                 console.log(vecchioGiocatore)
                 if (Aggiornamentopunteggioflag === 0) {
-                  if (vecchioGiocatore !== -1) {
-                    
-                    AggiornamentoPunteggio(vecchioGiocatore, 1, infonazione, continentenazione);
-                  }
+                  if (Furti[giocatoreingioco-1] > 0) { 
+                   
+                    if (vecchioGiocatore !== -1) {
 
-                 
-                  
-                  AggiornamentoPunteggio(giocatoreingioco - 1, 0, infonazione, continentenazione);
-                }
+                      AggiornamentoPunteggio(vecchioGiocatore, 1, infonazione, continentenazione);
+                    }
+
+
+
+                    AggiornamentoPunteggio(giocatoreingioco - 1, 0, infonazione, continentenazione);
+                  }
+                  else {
+                    Aggiornamentopunteggioflag = 1;
+                    flagcontrollo = 1;
+                    alert("Hai finito i furti a disposizione.Salti il turno")
+                    return;
+                  }
+                  furtoavvenuto = 1;
+                  Furti[giocatoreingioco-1] = Furti[giocatoreingioco-1] - 1
+                  console.log(Furti[giocatoreingioco])
+                } 
                 Aggiornamentopunteggioflag = 1;
-                p.style.fill = coloreattuale;
+                if (furtoavvenuto === 1) {
+                  p.style.fill = coloreattuale;
+                }
               }
-           
+
             }
           });
-
-          alert("Giusto!");
+          if (flagcontrollo === 0) {
+            alert("Giusto!");
+          }
 
         } else {
           alert("Sbagliato");
         }
-
+        console.log(giocatoreingioco)
         if (giocatoreingioco === numerogiocatori) {
           titologiocatore.textContent = "Turno di " + giocatori[0];
           titologiocatore.style.color = colorigiocatori[0];
+          testoFurti.textContent = "Furti rimanenti: " + Furti[0] + "/" + furtitotali
+          testoFurti.style.color = colorigiocatori[0];
         } else {
           titologiocatore.textContent = "Turno di " + giocatori[giocatoreingioco];
           titologiocatore.style.color = colorigiocatori[giocatoreingioco];
+          testoFurti.textContent = "Furti rimanenti: " + Furti[giocatoreingioco] + "/" + furtitotali
+          testoFurti.style.color = colorigiocatori[giocatoreingioco];
         }
 
         numeroturno = numeroturno + 1;
@@ -4471,87 +4533,87 @@
         if (infostato.popolazione >= 60000000) {
           esito = 1;
         } else {
-          esito=0
+          esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[1]) {
         if (infostato.popolazione <= 25000000) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[2]) {
         if (infostato.superficie >= 900000) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[3]) {
         if (infostato.superficie <= 600000) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[4]) {
-        if (infostato.colonizzato=== 0) {
+        if (infostato.colonizzato === 0) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[5]) {
         if (infostato.colonizzato === 1) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[6]) {
-        if (infostato.formaDiGoverno ==="Repubblica") {
+        if (infostato.formaDiGoverno === "Repubblica") {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[7]) {
         if (infostato.formaDiGoverno === "Monarchia") {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[8]) {
         if (infostato.formaDiGoverno === "Dittatura") {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[9]) {
         if (infostato.lingua === "Inglese" || infostato.lingua === "Spagnolo" || infostato.lingua === "Francese" || infostato.lingua === "Arabo") {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[10]) {
         if (infostato.lingua != "Inglese" && infostato.lingua != "Spagnolo" && infostato.lingua != "Francese" && infostato.lingua != "Arabo") {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[11]) {
         const primalettera = infostato.capitale.charAt(0);
-        if (primalettera === "B" || primalettera === "N" || primalettera === "G" || primalettera === "T" || primalettera === "P" || primalettera === "L" ) {
+        if (primalettera === "B" || primalettera === "N" || primalettera === "G" || primalettera === "T" || primalettera === "P" || primalettera === "L") {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[12]) {
         const primalettera = infostato.capitale.charAt(0);
         if (primalettera === "R" || primalettera === "M" || primalettera === "V" || primalettera === "C" || primalettera === "S" || primalettera === "F") {
@@ -4559,28 +4621,28 @@
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[13]) {
         if (infostato.numColoriBandiera >= 3) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[14]) {
-        if (infostato.numColoriBandiera<=2) {
+        if (infostato.numColoriBandiera <= 2) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[15]) {
         if (infostato.indipendenza >= 1900) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[16]) {
         if (infostato.indipendenza <= 1900) {
           esito = 1;
@@ -4594,37 +4656,46 @@
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[18]) {
         if (infostato.altezzaMonte <= 2000) {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
       if (domandaestratta === domande[19]) {
-        const ultimalettera = infostato.capitale.charAt(infostato.capitale.length-1);
+        const ultimalettera = infostato.capitale.charAt(infostato.capitale.length - 1);
         if (ultimalettera != "a" && ultimalettera != "e" && ultimalettera != "i" && ultimalettera != "o" && ultimalettera != "u" && ultimalettera != "y") {
           esito = 1;
         } else {
           esito = 0
         }
-      } 
+      }
     }
 
     else {
       alert("Genera prima una domanda per questo turno");
       esito = 2;
     }
-    
+
 
     return esito;
   }
- function  AggiornamentoPunteggio(Gioc, indovinatoprecedentemente,info,continente){
+
+
+
+  const somma = risposte.reduce((acc, stato) => acc + stato.popolazione, 0);
+  console.log(somma)
+
+
+
+
+  function AggiornamentoPunteggio(Gioc, indovinatoprecedentemente, info, continente) {
     if (indovinatoprecedentemente === 0) {
-     
+
       if (continente.continente == "Africa") {
-        territoriAfrica[Gioc]=territoriAfrica[Gioc]+1
+        territoriAfrica[Gioc] = territoriAfrica[Gioc] + 1
       }
       if (continente.continente == "Oceania") {
         territoriOceania[Gioc] = territoriOceania[Gioc] + 1
@@ -4665,9 +4736,15 @@
       if (continente.continente == "Europa") {
         territoriEuropa[Gioc] = territoriEuropa[Gioc] - 1
       }
-      mediapopolazioneterritori[Gioc] = (mediapopolazioneterritori[Gioc] * territoritotali[Gioc] - info.popolazione) / (territoritotali[Gioc] - 1);
-      mediaestensioneterritori[Gioc] = (mediaestensioneterritori[Gioc] * territoritotali[Gioc] - info.superficie) / (territoritotali[Gioc] - 1);
-      mediaPilProcapite[Gioc] = (mediaPilProcapite[Gioc] * territoritotali[Gioc] - info.pilProCapite) / (territoritotali[Gioc] - 1);
+      if (territoritotali[Gioc] >= 2) {
+        mediapopolazioneterritori[Gioc] = (mediapopolazioneterritori[Gioc] * territoritotali[Gioc] - info.popolazione) / (territoritotali[Gioc] - 1);
+        mediaestensioneterritori[Gioc] = (mediaestensioneterritori[Gioc] * territoritotali[Gioc] - info.superficie) / (territoritotali[Gioc] - 1);
+        mediaPilProcapite[Gioc] = (mediaPilProcapite[Gioc] * territoritotali[Gioc] - info.pilProCapite) / (territoritotali[Gioc] - 1);
+      } else {
+        mediapopolazioneterritori[Gioc] =0
+        mediaestensioneterritori[Gioc] = 0
+        mediaPilProcapite[Gioc] = 0
+      }
       if (info.colonizzato === 0) {
         territorimaicolonizzati[Gioc] = territorimaicolonizzati[Gioc] - 1
       } else {
@@ -4683,18 +4760,18 @@
       ControllaVittoria(Gioc);
     }
   }
-  function ControllaVittoria(Gioc){
+  function ControllaVittoria(Gioc) {
     let vittoria = 0
     const obiettivo = obiettivigiocatori[Gioc]
     if (obiettivo === obiettivitotale[0]) {
       if (territoritotali[Gioc] >= 10) {
-        vittoria=1
+        vittoria = 1
       }
     }
     if (obiettivo === obiettivitotale[1]) {
-      let continentibuoni=0
+      let continentibuoni = 0
       if (territoriAsia[Gioc] >= 2) {
-        continentibuoni=continentibuoni+1
+        continentibuoni = continentibuoni + 1
       }
       if (territoriAfrica[Gioc] >= 2) {
         continentibuoni = continentibuoni + 1
@@ -4709,11 +4786,11 @@
         continentibuoni = continentibuoni + 1
       }
       if (continentibuoni >= 4) {
-        vittoria=1
+        vittoria = 1
       }
     }
     if (obiettivo === obiettivitotale[2]) {
-      if (mediapopolazioneterritori[Gioc] >= 50000000 && territoritotali[Gioc]>=7) {
+      if (mediapopolazioneterritori[Gioc] >= 50000000 && territoritotali[Gioc] >= 7) {
         vittoria = 1
       }
     }
@@ -4739,7 +4816,7 @@
       if (territoriOceania[Gioc] >= 1) {
         continentibuoni = continentibuoni + 1
       }
-      if (continentibuoni <= 2 && territoritotali[Gioc]>=7) {
+      if (continentibuoni <= 2 && territoritotali[Gioc] >= 7) {
         vittoria = 1
       }
     }
@@ -4764,12 +4841,12 @@
       }
     }
     if (obiettivo === obiettivitotale[9]) {
-      if (territorimaicolonizzati[Gioc] >= 5 && territoritotali[Gioc] >= 7 ) {
+      if (territorimaicolonizzati[Gioc] >= 5 && territoritotali[Gioc] >= 7) {
         vittoria = 1
       }
     }
     if (obiettivo === obiettivitotale[10]) {
-      if (territoricolonizzati[Gioc] >= 5 && territoritotali[Gioc] >= 7 ) {
+      if (territoricolonizzati[Gioc] >= 5 && territoritotali[Gioc] >= 7) {
         vittoria = 1
       }
     }
@@ -4806,16 +4883,16 @@
     if (giocatoreingiocorecap === 0) {
       giocatoreingiocorecap = numerogiocatori;
     }
-    const testoobiettivo = "Obiettivo: " + obiettivigiocatori[giocatoreingiocorecap - 1] + "\nTerritori totali : " + territoritotali[giocatoreingiocorecap - 1] + "\nTerritori Africa : " + territoriAfrica[giocatoreingiocorecap - 1] +"\nTerritori Asia : " + territoriAsia[giocatoreingiocorecap - 1]
-      + "\nTerritori Americhe : " + territoriAmeriche[giocatoreingiocorecap - 1] + "\nTerritori Oceania : " + territoriOceania[giocatoreingiocorecap - 1] + "\nTerritori Europa : " + territoriEuropa[giocatoreingiocorecap - 1]  +"\nMedia popolazione territori: " + mediapopolazioneterritori[giocatoreingiocorecap - 1]
+    const testoobiettivo = "Obiettivo: " + obiettivigiocatori[giocatoreingiocorecap - 1] + "\nTerritori totali : " + territoritotali[giocatoreingiocorecap - 1] + "\nTerritori Africa : " + territoriAfrica[giocatoreingiocorecap - 1] + "\nTerritori Asia : " + territoriAsia[giocatoreingiocorecap - 1]
+      + "\nTerritori Americhe : " + territoriAmeriche[giocatoreingiocorecap - 1] + "\nTerritori Oceania : " + territoriOceania[giocatoreingiocorecap - 1] + "\nTerritori Europa : " + territoriEuropa[giocatoreingiocorecap - 1] + "\nMedia popolazione territori: " + mediapopolazioneterritori[giocatoreingiocorecap - 1]
       + "\nMedia estensione territori : " + mediaestensioneterritori[giocatoreingiocorecap - 1] + "\nMedia PIL Pro capite territori : " + mediaPilProcapite[giocatoreingiocorecap - 1] + "\nTerritori tche non sono mai stati colonizzati : " + territorimaicolonizzati[giocatoreingiocorecap - 1]
       + "\nTerritori colonizzati almeno una volta : " + territoricolonizzati[giocatoreingiocorecap - 1] + "\nCapitali: " + capitali[giocatoreingiocorecap - 1];
-      alert(testoobiettivo)
+    alert(testoobiettivo)
 
   });
   function rgbToHex(rgb) {
-  const result = rgb.match(/\d+/g);
-  return "#" + result.map(x => (+x).toString(16).padStart(2, '0')).join('').toUpperCase();
-}
+    const result = rgb.match(/\d+/g);
+    return "#" + result.map(x => (+x).toString(16).padStart(2, '0')).join('').toUpperCase();
+  }
 
 </script>
