@@ -4342,6 +4342,7 @@
     }
     if (controllo === 1) {
 
+      colorigiocatori = coloritotale.slice(0, numerogiocatori);
       imp.hidden = true;
       mappa.hidden = false;
       for (let i = 0; i < numerogiocatori; i++) {
@@ -4359,7 +4360,6 @@
       }
 
 
-      colorigiocatori = coloritotale.slice(0, numerogiocatori);
 
       titologiocatore.textContent = "Turno di " + giocatori[0];
       titologiocatore.style.color = colorigiocatori[0];
