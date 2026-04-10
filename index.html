@@ -217,6 +217,30 @@
         font-size: 14px;
       }
     }
+    #confirmOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      z-index: 1000;
+    }
+
+    #confirmBox {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      z-index: 1001;
+      min-width: 250px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -279,7 +303,7 @@
        top: 10px;
        left: 10px;
        font-size: 24px;
-      
+
      ">
         Testo informativo
       </div>
@@ -1330,19 +1354,20 @@
                title="Inserisci solo lettere dell'alfabeto, lettere accentate e spazi"
                oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]/g,'').toUpperCase()" />
       </div>
-      <div class="form-group" id="campoNumeroFurti" >
+      <div class="form-group" id="campoNumeroFurti">
         <label for="NumeroFurti">Numero Furti Massimo per giocatore (lasciare vuoto se illimitato)</label>
         <input type="text" id="NumeroFurti" name="NumeroFurti"
                pattern="\d*"
                title="Inserisci solo numeri interi"
                oninput="this.value = this.value.replace(/[^0-9]/g,'')" />
-        </div>
+      </div>
 
       <div class="form-group" id="contenitoredifficolta">
         <label id="lbldifficolta" for="difficolta">Selezionare Difficoltà</label>
         <select id="selezionadifficolta" onchange="cambiaDifficolta(this.value)">
-          <option value="normale" selected=selected>NORMALE</option>
-          <option value="semplificato">SEMPLIFICATO</option>
+          <option value="facile">FACILE</option>
+          <option value="medio" selected=selected>MEDIO</option>
+          <option value="difficile">DIFFICILE</option>
 
         </select>
 
@@ -1381,6 +1406,16 @@
   <script src="Script1.js"></script>
   </form>
   </div>
+  <div id="confirmOverlay"></div>
+
+  <!-- Popup conferma -->
+  <div id="confirmBox">
+    <p id="confirmText">Vuoi selezionare questa area?</p>
+    <div style="display:flex; gap:10px; margin-top:15px;">
+      <button id="btnConfirm">Conferma</button>
+      <button id="btnCancel" style="background-color:#ccc; color:black;">Annulla</button>
+    </div>
+  </div>
 </body>
 </html>
 <script>
@@ -1404,7 +1439,7 @@
   const mappa = document.getElementById("mappa");
   const titologiocatore = document.getElementById("GiocatoreAttivo")
   let numeroturno = 1;
-  let difficolta = 0;
+  let difficolta = 1;
   let numerogiocatori = 2;
   const paths = document.querySelectorAll('path');
   let giocatori = [];
@@ -1439,7 +1474,7 @@
     "Montagna più alta minore di 2000 metri", "Capitale che nella traduzione italiana finisce con una consonante"
   ];
 
-
+  let box = 0;
 
 
 
@@ -4220,10 +4255,14 @@
 
 
   function cambiaDifficolta(valore) {
-    if (valore === "semplificato") {
-      difficolta = 1;
-    } else {
+    if (valore === "facile") {
       difficolta = 0;
+    } else {
+      if (valore === "medio") {
+        difficolta = 1;
+      } else {
+        difficolta = 2;
+      }
     }
   }
 
@@ -4402,128 +4441,181 @@
   console.log(allNames);
 
   // Se vuoi fare anche l'interazione al click
+  let selectedPath = null;
+
   paths.forEach(path => {
-
     path.addEventListener('click', () => {
-      let Aggiornamentopunteggioflag = 0;
-      let furtoavvenuto = 0;
-      let flagcontrollo = 0;
-      giocatoreingioco = numeroturno % numerogiocatori;
-      if (giocatoreingioco === 0) {
-        giocatoreingioco = numerogiocatori;
+
+      selectedPath = path;
+
+      const nome = path.getAttribute('class') || path.dataset.name;
+      if (difficolta === 1) {
+        document.getElementById("confirmText").innerText =
+          "Vuoi selezionare " + nome + "?";
       }
-
-      const countryName = path.getAttribute('class') || path.dataset.name;
-      const esitodomanda = controlloRisposta(countryName);
-
-      if (esitodomanda <= 1) {
-
-        if (esitodomanda === 1) {
-
-          let infonazione = risposte.find(stato => stato.nome === countryName);
-          let continentenazione = continenti.find(stato => stato.nome === countryName);
-
-          const coloreattuale = colorigiocatori[giocatoreingioco - 1];
-
-          paths.forEach(p => {
-            if (flagcontrollo === 1) {
-              return;
-            }
-            const nameOrClass = p.getAttribute('class') || p.dataset.name;
-
-            if (nameOrClass === countryName) {
-
-              const coloreprecedente = p.style.fill;
-              let coloreprecedentebis = p.style.fill;
-              if (coloreprecedente) { // solo se c'è un colore
-                coloreprecedentebis = rgbToHex(coloreprecedente);
-
-              } else {
-                coloreprecedentebis = p.style.fill
-              }
-
-
-              // 🔵 CASO 1: è già tuo → togli
-              if (coloreprecedente === coloreattuale || coloreprecedentebis === coloreattuale) {
-
-                p.style.fill = "";
-                if (Aggiornamentopunteggioflag === 0) {
-                  AggiornamentoPunteggio(giocatoreingioco - 1, 1, infonazione, continentenazione);
-                  Aggiornamentopunteggioflag = 1
-                }
-                return; // 👈 IMPORTANTISSIMO
-              }
-
-              // 🟢 CASO 2: territorio libero
-              if (coloreprecedente === "") {
-                p.style.fill = coloreattuale;
-                if (Aggiornamentopunteggioflag === 0) {
-                  AggiornamentoPunteggio(giocatoreingioco - 1, 0, infonazione, continentenazione);
-                  Aggiornamentopunteggioflag = 1
-                }
-              }
-
-              // 🔴 CASO 3: territorio di un altro
-              else {
-                
-                console.log(Aggiornamentopunteggioflag)
-                const vecchioGiocatore = colorigiocatori.indexOf(rgbToHex(coloreprecedente));
-                console.log(vecchioGiocatore)
-                if (Aggiornamentopunteggioflag === 0) {
-                  if (Furti[giocatoreingioco-1] > 0) { 
-                   
-                    if (vecchioGiocatore !== -1) {
-
-                      AggiornamentoPunteggio(vecchioGiocatore, 1, infonazione, continentenazione);
-                    }
-
-
-
-                    AggiornamentoPunteggio(giocatoreingioco - 1, 0, infonazione, continentenazione);
-                  }
-                  else {
-                    Aggiornamentopunteggioflag = 1;
-                    flagcontrollo = 1;
-                    alert("Hai finito i furti a disposizione.Salti il turno")
-                    return;
-                  }
-                  furtoavvenuto = 1;
-                  Furti[giocatoreingioco-1] = Furti[giocatoreingioco-1] - 1
-                  console.log(Furti[giocatoreingioco])
-                } 
-                Aggiornamentopunteggioflag = 1;
-                if (furtoavvenuto === 1) {
-                  p.style.fill = coloreattuale;
-                }
-              }
-
-            }
-          });
-          if (flagcontrollo === 0) {
-            alert("Giusto!");
-          }
-
-        } else {
-          alert("Sbagliato");
-        }
-        console.log(giocatoreingioco)
-        if (giocatoreingioco === numerogiocatori) {
-          titologiocatore.textContent = "Turno di " + giocatori[0];
-          titologiocatore.style.color = colorigiocatori[0];
-          testoFurti.textContent = "Furti rimanenti: " + Furti[0] + "/" + furtitotali
-          testoFurti.style.color = colorigiocatori[0];
-        } else {
-          titologiocatore.textContent = "Turno di " + giocatori[giocatoreingioco];
-          titologiocatore.style.color = colorigiocatori[giocatoreingioco];
-          testoFurti.textContent = "Furti rimanenti: " + Furti[giocatoreingioco] + "/" + furtitotali
-          testoFurti.style.color = colorigiocatori[giocatoreingioco];
-        }
-
-        numeroturno = numeroturno + 1;
-        flagdomanda = 0;
+      if (difficolta === 2) {
+        document.getElementById("confirmText").innerText =
+          "???";
       }
+      if (difficolta === 0) {
+        let infostato = risposte.find(stato => stato.nome === nome);
+        let continentestato = continenti.find(stato => stato.nome === nome);
+        let testoindizio = "Vuoi selezionare " + nome + "?" + "\nCapitale: " + infostato.capitale + "\nContinente: " + continentestato.continente+ "\nPopolazione: " + formatNumero(infostato.popolazione) + "\nEstensione: " + formatNumero(infostato.superficie) + "\nPil Pro Capite: " + infostato.pilProCapite
+          + "\nForma Di Governo: " + infostato.formaDiGoverno + "\nNumeri colori bandiera: " + infostato.numColoriBandiera + "\nAltezza Monte più alto: " + infostato.altezzaMonte
+        if (infostato.indipendenza >= 3000) {
+          testoindizio = testoindizio + "\nIndipendenza: " + "Mai avvenuta"
+        } else {
+          testoindizio = testoindizio + "\nIndipendenza: " + infostato.indipendenza
+        }
+        if (infostato.indipendenza === 0) {
+          testoindizio = testoindizio + "\nColonizzato almeno una volta: " + "No"
+        } else {
+          testoindizio = testoindizio + "\nColonizzato almeno una volta: " + "Si"
+        }
+        document.getElementById("confirmText").innerText = testoindizio
+      }
+      document.getElementById("confirmOverlay").style.display = "block";
+      document.getElementById("confirmBox").style.display = "block";
     });
   });
+  document.getElementById("btnConfirm").addEventListener("click", () => {
+    if (selectedPath) {
+      gestisciClickPath(selectedPath); // 👈 QUI PARTE IL TUO CODICE
+    }
+    chiudiPopup();
+  });
+  document.getElementById("btnCancel").addEventListener("click", chiudiPopup);
+
+  function chiudiPopup() {
+    document.getElementById("confirmOverlay").style.display = "none";
+    document.getElementById("confirmBox").style.display = "none";
+    selectedPath = null;
+  }
+ 
+ 
+
+
+
+
+
+  
+
+
+
+  function gestisciClickPath(path) {
+
+    let Aggiornamentopunteggioflag = 0;
+    let furtoavvenuto = 0;
+    let flagcontrollo = 0;
+
+    giocatoreingioco = numeroturno % numerogiocatori;
+    if (giocatoreingioco === 0) {
+      giocatoreingioco = numerogiocatori;
+    }
+
+    const countryName = path.getAttribute('class') || path.dataset.name;
+    const esitodomanda = controlloRisposta(countryName);
+
+    if (esitodomanda <= 1) {
+
+      if (esitodomanda === 1) {
+
+        let infonazione = risposte.find(stato => stato.nome === countryName);
+        let continentenazione = continenti.find(stato => stato.nome === countryName);
+
+        const coloreattuale = colorigiocatori[giocatoreingioco - 1];
+
+        paths.forEach(p => {
+          if (flagcontrollo === 1) return;
+
+          const nameOrClass = p.getAttribute('class') || p.dataset.name;
+
+          if (nameOrClass === countryName) {
+
+            const coloreprecedente = p.style.fill;
+            let coloreprecedentebis = coloreprecedente
+              ? rgbToHex(coloreprecedente)
+              : p.style.fill;
+
+            // 🔵 tuo
+            if (coloreprecedente === coloreattuale || coloreprecedentebis === coloreattuale) {
+              p.style.fill = "";
+              if (Aggiornamentopunteggioflag === 0) {
+                AggiornamentoPunteggio(giocatoreingioco - 1, 1, infonazione, continentenazione);
+                Aggiornamentopunteggioflag = 1;
+              }
+              return;
+            }
+
+            // 🟢 libero
+            if (coloreprecedente === "") {
+              p.style.fill = coloreattuale;
+              if (Aggiornamentopunteggioflag === 0) {
+                AggiornamentoPunteggio(giocatoreingioco - 1, 0, infonazione, continentenazione);
+                Aggiornamentopunteggioflag = 1;
+              }
+            }
+
+            // 🔴 altro giocatore
+            else {
+              const vecchioGiocatore = colorigiocatori.indexOf(rgbToHex(coloreprecedente));
+
+              if (Aggiornamentopunteggioflag === 0) {
+                if (Furti[giocatoreingioco - 1] > 0) {
+
+                  if (vecchioGiocatore !== -1) {
+                    AggiornamentoPunteggio(vecchioGiocatore, 1, infonazione, continentenazione);
+                  }
+
+                  AggiornamentoPunteggio(giocatoreingioco - 1, 0, infonazione, continentenazione);
+
+                } else {
+                  Aggiornamentopunteggioflag = 1;
+                  flagcontrollo = 1;
+                  alert("Hai finito i furti a disposizione. Salti il turno");
+                  return;
+                }
+
+                furtoavvenuto = 1;
+                Furti[giocatoreingioco - 1]--;
+              }
+
+              Aggiornamentopunteggioflag = 1;
+
+              if (furtoavvenuto === 1) {
+                p.style.fill = coloreattuale;
+              }
+            }
+          }
+        });
+
+        if (flagcontrollo === 0) {
+          alert("Giusto!");
+        }
+
+      } else {
+        alert("Sbagliato");
+      }
+
+      // turno
+      if (giocatoreingioco === numerogiocatori) {
+        titologiocatore.textContent = "Turno di " + giocatori[0];
+        titologiocatore.style.color = colorigiocatori[0];
+        testoFurti.textContent = "Furti rimanenti: " + Furti[0] + "/" + furtitotali;
+        testoFurti.style.color = colorigiocatori[0];
+      } else {
+        titologiocatore.textContent = "Turno di " + giocatori[giocatoreingioco];
+        titologiocatore.style.color = colorigiocatori[giocatoreingioco];
+        testoFurti.textContent = "Furti rimanenti: " + Furti[giocatoreingioco] + "/" + furtitotali;
+        testoFurti.style.color = colorigiocatori[giocatoreingioco];
+      }
+
+      numeroturno++;
+      flagdomanda = 0;
+    }
+  }
+
+
   function controlloRisposta(nomestato) {
     let esito = 0;
     let infostato = risposte.find(stato => stato.nome === nomestato);
@@ -4741,7 +4833,7 @@
         mediaestensioneterritori[Gioc] = (mediaestensioneterritori[Gioc] * territoritotali[Gioc] - info.superficie) / (territoritotali[Gioc] - 1);
         mediaPilProcapite[Gioc] = (mediaPilProcapite[Gioc] * territoritotali[Gioc] - info.pilProCapite) / (territoritotali[Gioc] - 1);
       } else {
-        mediapopolazioneterritori[Gioc] =0
+        mediapopolazioneterritori[Gioc] = 0
         mediaestensioneterritori[Gioc] = 0
         mediaPilProcapite[Gioc] = 0
       }
@@ -4884,15 +4976,18 @@
       giocatoreingiocorecap = numerogiocatori;
     }
     const testoobiettivo = "Obiettivo: " + obiettivigiocatori[giocatoreingiocorecap - 1] + "\nTerritori totali : " + territoritotali[giocatoreingiocorecap - 1] + "\nTerritori Africa : " + territoriAfrica[giocatoreingiocorecap - 1] + "\nTerritori Asia : " + territoriAsia[giocatoreingiocorecap - 1]
-      + "\nTerritori Americhe : " + territoriAmeriche[giocatoreingiocorecap - 1] + "\nTerritori Oceania : " + territoriOceania[giocatoreingiocorecap - 1] + "\nTerritori Europa : " + territoriEuropa[giocatoreingiocorecap - 1] + "\nMedia popolazione territori: " + mediapopolazioneterritori[giocatoreingiocorecap - 1]
-      + "\nMedia estensione territori : " + mediaestensioneterritori[giocatoreingiocorecap - 1] + "\nMedia PIL Pro capite territori : " + mediaPilProcapite[giocatoreingiocorecap - 1] + "\nTerritori tche non sono mai stati colonizzati : " + territorimaicolonizzati[giocatoreingiocorecap - 1]
+      + "\nTerritori Americhe : " + territoriAmeriche[giocatoreingiocorecap - 1] + "\nTerritori Oceania : " + territoriOceania[giocatoreingiocorecap - 1] + "\nTerritori Europa : " + territoriEuropa[giocatoreingiocorecap - 1] + "\nMedia popolazione territori: " + formatNumero(mediapopolazioneterritori[giocatoreingiocorecap - 1])
+      + "\nMedia estensione territori : " + formatNumero(mediaestensioneterritori[giocatoreingiocorecap - 1]) + "\nMedia PIL Pro capite territori : " + formatNumero(mediaPilProcapite[giocatoreingiocorecap - 1]) + "\nTerritori tche non sono mai stati colonizzati : " + territorimaicolonizzati[giocatoreingiocorecap - 1]
       + "\nTerritori colonizzati almeno una volta : " + territoricolonizzati[giocatoreingiocorecap - 1] + "\nCapitali: " + capitali[giocatoreingiocorecap - 1];
     alert(testoobiettivo)
 
   });
+
   function rgbToHex(rgb) {
     const result = rgb.match(/\d+/g);
     return "#" + result.map(x => (+x).toString(16).padStart(2, '0')).join('').toUpperCase();
   }
-
+  function formatNumero(num) {
+    return num.toLocaleString('it-IT');
+  }
 </script>
