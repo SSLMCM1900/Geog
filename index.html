@@ -1362,6 +1362,61 @@
                oninput="this.value = this.value.replace(/[^0-9]/g,'')" />
       </div>
 
+      <div class="form-group" id="contenitoreEuropa">
+        <label id="lblEuroa" for="Europa">Europa</label>
+        <select id="Europa" onchange="giocaEuropa(this.value)">
+          <option value="no">NO</option>
+          <option value="si" selected=selected>SI</option>
+
+
+        </select>
+
+
+      </div>
+      <div class="form-group" id="contenitoreAfrica">
+        <label id="lblAfrica" for="Africa">Africa</label>
+        <select id="Africa" onchange="giocaAfrica(this.value)">
+          <option value="no">NO</option>
+          <option value="si" selected=selected>SI</option>
+
+
+        </select>
+
+
+      </div>
+      <div class="form-group" id="contenitoreAmeriche">
+        <label id="lblAmeriche" for="Americhe">Americhe</label>
+        <select id="Americhe" onchange="giocaAmeriche(this.value)">
+          <option value="no">NO</option>
+          <option value="si" selected=selected>SI</option>
+
+
+        </select>
+
+
+      </div>
+      <div class="form-group" id="contenitoreAsia">
+        <label id="lblAsia" for="Asia">Asia</label>
+        <select id="Asia" onchange="giocaAsia(this.value)">
+          <option value="no">NO</option>
+          <option value="si" selected=selected>SI</option>
+
+
+        </select>
+
+
+      </div>
+      <div class="form-group" id="contenitoreOceania">
+        <label id="lblOceania" for="Europa">Oceania</label>
+        <select id="Oceania" onchange="giocaOceania(this.value)">
+          <option value="no">NO</option>
+          <option value="si" selected=selected>SI</option>
+
+
+        </select>
+
+
+      </div>
       <div class="form-group" id="contenitoredifficolta">
         <label id="lbldifficolta" for="difficolta">Selezionare Difficoltà</label>
         <select id="selezionadifficolta" onchange="cambiaDifficolta(this.value)">
@@ -1448,6 +1503,13 @@
   let giocatoreingioco = 1;
   let domandaestratta = "";
   let furtitotali = 9999;
+
+  let giocaeuropa = 1;
+  let giocaasia = 1
+  let giocaoceania = 1
+  let giocaafrica = 1
+  let giocaameriche = 1
+
   const obiettivitotale = ["Conquista 10 territori", "Conquista 2 territori in 4 continenti", "Conquista almeno 7 territori con media di popolazione maggiore di 50 milioni",
     "Conquista almeno 7 territori con media di popolazione minore di 30 milioni", "Conquista almeno 7 terrirori ma solamente in al massimo 2 continenti",
     "Conquista almeno 7 stati con estensione media maggiore di 800 mila Km^2", "Conquista almeno 7 stati con estensione media minore di 700 mila Km^2",
@@ -1966,7 +2028,7 @@
       nome: "Denmark",
       capitale: "Copenaghen",
       popolazione: 5800000,
-      superficie: 43094,
+      superficie: 2209000,
       pilProCapite: 60000,
       formaDiGoverno: "Monarchia",
       colonizzato: 0,
@@ -4414,11 +4476,20 @@
       if (giocatoreingioco === 0) {
         giocatoreingioco = numerogiocatori;
       }
-      const randomIndex = Math.floor(Math.random() * domande.length);
+      let randomIndex = Math.floor(Math.random() * domande.length);
 
       testodomanda = giocatori[giocatoreingioco - 1] + " seleziona uno Stato con la seguente caratteristica : " + domande[randomIndex];
 
       domandaestratta = domande[randomIndex];
+      if (giocaafrica === 0 && giocaameriche === 0 && giocaasia === 0) {
+        const domandebis = domande.filter((_, i) => i !== 8);
+
+         randomIndex = Math.floor(Math.random() * domandebis.length);
+
+        testodomanda = giocatori[giocatoreingioco - 1] + " seleziona uno Stato con la seguente caratteristica : " + domandebis[randomIndex];
+        
+      }
+
       alert(testodomanda);
       flagdomanda = 1;
     }
@@ -4436,9 +4507,8 @@
     }
   });
 
-  // Converte in array e logga i nomi
+ 
   const allNames = Array.from(countryNames);
-  console.log(allNames);
 
   // Se vuoi fare anche l'interazione al click
   let selectedPath = null;
@@ -4777,8 +4847,7 @@
 
 
 
-  const somma = risposte.reduce((acc, stato) => acc + stato.popolazione, 0);
-  console.log(somma)
+
 
 
 
@@ -4990,4 +5059,140 @@
   function formatNumero(num) {
     return num.toLocaleString('it-IT');
   }
+
+
+
+
+  function giocaEuropa(valore) {
+    const europa = continenti
+      .filter(p => p.continente === "Europa")
+      .map(p => p.nome);
+
+    const paths = document.querySelectorAll("path");
+
+    paths.forEach(el => {
+      const name = el.getAttribute("data-name");
+      const cls = el.getAttribute("class");
+
+      const match =
+        europa.includes(name) ||
+        europa.includes(cls);
+
+      if (match) {
+        el.style.display = (valore === "no") ? "none" : "block";
+      }
+     
+    });
+    if (valore === "no") {
+      giocaeuropa = 0;
+    } else {
+      giocaeuropa = 1
+    }
+  }
+  function giocaAsia(valore) {
+    const europa = continenti
+      .filter(p => p.continente === "Asia")
+      .map(p => p.nome);
+
+    const paths = document.querySelectorAll("path");
+
+    paths.forEach(el => {
+      const name = el.getAttribute("data-name");
+      const cls = el.getAttribute("class");
+
+      const match =
+        europa.includes(name) ||
+        europa.includes(cls);
+
+      if (match) {
+        el.style.display = (valore === "no") ? "none" : "block";
+      }
+     
+    });
+    if (valore === "no") {
+      giocaasia = 0;
+    } else {
+      giocaasia = 1
+    }
+  }
+  function giocaAmeriche(valore) {
+    const europa = continenti
+      .filter(p => p.continente === "Americhe")
+      .map(p => p.nome);
+
+    const paths = document.querySelectorAll("path");
+
+    paths.forEach(el => {
+      const name = el.getAttribute("data-name");
+      const cls = el.getAttribute("class");
+
+      const match =
+        europa.includes(name) ||
+        europa.includes(cls);
+
+      if (match) {
+        el.style.display = (valore === "no") ? "none" : "block";
+      }
+    });
+    if (valore === "no") {
+      giocaameriche = 0;
+    } else {
+      giocaameriche = 1
+    }
+  }
+  function giocaOceania(valore) {
+    const europa = continenti
+      .filter(p => p.continente === "Oceania")
+      .map(p => p.nome);
+
+    const paths = document.querySelectorAll("path");
+
+    paths.forEach(el => {
+      const name = el.getAttribute("data-name");
+      const cls = el.getAttribute("class");
+
+      const match =
+        europa.includes(name) ||
+        europa.includes(cls);
+
+      if (match) {
+        el.style.display = (valore === "no") ? "none" : "block";
+      }
+    });
+    if (valore === "no") {
+      giocaoceania = 0;
+    } else {
+      giocaoceania = 1
+    }
+  }
+  function giocaAfrica(valore) {
+    const europa = continenti
+      .filter(p => p.continente === "Africa")
+      .map(p => p.nome);
+
+    const paths = document.querySelectorAll("path");
+
+    paths.forEach(el => {
+      const name = el.getAttribute("data-name");
+      const cls = el.getAttribute("class");
+
+      const match =
+        europa.includes(name) ||
+        europa.includes(cls);
+
+      if (match) {
+        el.style.display = (valore === "no") ? "none" : "block";
+      }
+    });
+    if (valore === "no") {
+      giocaafrica = 0;
+    } else {
+      giocaafrica = 1
+    }
+  }
+  const dittature = risposte
+    .filter(p => p.formaDiGoverno ==="Dittatura")
+    .map(p => p.nome);
+
+
 </script>
