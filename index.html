@@ -1510,7 +1510,7 @@
   let giocaafrica = 1
   let giocaameriche = 1
 
-  const obiettivitotale = ["Conquista 10 territori", "Conquista 2 territori in 4 continenti", "Conquista almeno 7 territori con media di popolazione maggiore di 50 milioni",
+  const obiettivitotale = ["Conquista 8 territori", "Conquista 2 territori in 4 continenti", "Conquista almeno 7 territori con media di popolazione maggiore di 50 milioni",
     "Conquista almeno 7 territori con media di popolazione minore di 30 milioni", "Conquista almeno 7 terrirori ma solamente in al massimo 2 continenti",
     "Conquista almeno 7 stati con estensione media maggiore di 800 mila Km^2", "Conquista almeno 7 stati con estensione media minore di 700 mila Km^2",
     "Conquista almeno 7 Stati con PIL pro capite medio maggiore di 15000 dollari", "Conquista almeno 7 Stati con PIL pro capite medio minore di 10000 dollari", "Conquista almeno 7 Stati di cui almeno 5 mai colonizzati",
@@ -1644,7 +1644,7 @@
       colonizzato: 0,
       indipendenza: 1955,
       lingua: "Tedesco",
-      numColoriBandiera: 3,
+      numColoriBandiera: 2,
       altezzaMonte: 3798
     },
     {
@@ -4308,9 +4308,34 @@
   ];
 
 
+  //const risultato = {};
 
+  //continenti.forEach(cont => {
+  //  const stato = risposte.find(r => r.nome === cont.nome);
 
+  //  if (!stato) return;
 
+  //  const continente = cont.continente;
+  //  const iniziale = stato.capitale[0]; // prima lettera
+
+  //  if (!risultato[continente]) {
+  //    risultato[continente] = {};
+  //  }
+
+  //  risultato[continente][iniziale] =
+  //    (risultato[continente][iniziale] || 0) + 1;
+  //});
+
+  //// trasformo in massimo per continente
+  //const finalResult = {};
+
+  //for (const continente in risultato) {
+  //  const lettere = risultato[continente];
+  //  const max = Math.max(...Object.values(lettere));
+  //  finalResult[continente] = max;
+  //}
+
+  //console.log(finalResult);
 
 
 
@@ -4446,9 +4471,27 @@
       colorigiocatori = coloritotale.slice(0, numerogiocatori);
       imp.hidden = true;
       mappa.hidden = false;
+      const obiettivitotaleappoggio = ["Conquista 8 territori", "Conquista 2 territori in 4 continenti", "Conquista almeno 7 territori con media di popolazione maggiore di 50 milioni",
+        "Conquista almeno 7 territori con media di popolazione minore di 30 milioni", "Conquista almeno 7 terrirori ma solamente in al massimo 2 continenti",
+        "Conquista almeno 7 stati con estensione media maggiore di 800 mila Km^2", "Conquista almeno 7 stati con estensione media minore di 700 mila Km^2",
+        "Conquista almeno 7 Stati con PIL pro capite medio maggiore di 15000 dollari", "Conquista almeno 7 Stati con PIL pro capite medio minore di 10000 dollari", "Conquista almeno 7 Stati di cui almeno 5 mai colonizzati",
+        "Conquista almeno 7 stati di cui almeno 5 che sono stati colonizzati", "Conquista almeno 7 Stati di cui almeno 3 con la capitale che inizia con la stessa lettera"
+      ]
+
+      let obiettivitotale2 = obiettivitotale
+      if (giocaafrica + giocaameriche + giocaeuropa + giocaoceania + giocaasia < 4) {
+        obiettivitotale2=obiettivitotale2.filter(el => el !== "Conquista 2 territori in 4 continenti");
+      }
+      if (giocaafrica + giocaameriche + giocaeuropa + giocaoceania + giocaasia < 3) {
+        obiettivitotale2 =obiettivitotale2.filter(el => el !== "Conquista almeno 7 terrirori ma solamente in al massimo 2 continenti");
+      }
+      if (!giocaafrica || !giocaameriche || !giocaoceania) {
+        obiettivitotale2 =obiettivitotale2.filter(el => el !== "Conquista almeno 7 Stati di cui almeno 5 mai colonizzati");
+      }
+
       for (let i = 0; i < numerogiocatori; i++) {
-        const randomIndex = Math.floor(Math.random() * obiettivitotale.length);
-        obiettivigiocatori.push(obiettivitotale[randomIndex]);
+        const randomIndex = Math.floor(Math.random() * obiettivitotale2.length);
+        obiettivigiocatori.push(obiettivitotale2[randomIndex]);
       }
 
       if (NumeroFurti.value) {
@@ -4464,9 +4507,11 @@
 
       titologiocatore.textContent = "Turno di " + giocatori[0];
       titologiocatore.style.color = colorigiocatori[0];
+      console.log(obiettivitotale2)
     } else {
       alert("Inserire nomi giocatori");
     }
+  
   });
   let testodomanda = ""
   let flagdomanda = 0;
@@ -4487,7 +4532,7 @@
          randomIndex = Math.floor(Math.random() * domandebis.length);
 
         testodomanda = giocatori[giocatoreingioco - 1] + " seleziona uno Stato con la seguente caratteristica : " + domandebis[randomIndex];
-        
+        domandaestratta = domandebis[randomIndex];
       }
 
       alert(testodomanda);
@@ -4496,6 +4541,7 @@
     else {
       alert(testodomanda)
     }
+    
   });
   // Array per salvare i nomi unici
   const countryNames = new Set();
@@ -4925,7 +4971,7 @@
     let vittoria = 0
     const obiettivo = obiettivigiocatori[Gioc]
     if (obiettivo === obiettivitotale[0]) {
-      if (territoritotali[Gioc] >= 10) {
+      if (territoritotali[Gioc] >= 8) {
         vittoria = 1
       }
     }
@@ -5190,9 +5236,5 @@
       giocaafrica = 1
     }
   }
-  const dittature = risposte
-    .filter(p => p.formaDiGoverno ==="Dittatura")
-    .map(p => p.nome);
-
 
 </script>
